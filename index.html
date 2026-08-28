@@ -1,0 +1,840 @@
+<title>Sprint 分支流程提案</title>
+<style>
+  :root{
+    --paper:#F3F5F6;
+    --paper-raised:#FFFFFF;
+    --ink:#14212B;
+    --muted:#5B6B75;
+    --hair:#DBE2E6;
+    --trunk:#2B3A4A;      /* dev2 */
+    --release:#3E6B8A;    /* release branch */
+    --problem:#B5482F;    /* forQA / 現行整合點 */
+    --solution:#1F7A5C;   /* sprint 分支 / 新版整合點 */
+    --feat-a:#C68A2E;     /* 需求分支 A */
+    --feat-b:#6B5B8C;     /* 需求分支 B */
+    --font-cjk:"PingFang TC","Heiti TC","Microsoft JhengHei","Noto Sans TC",sans-serif;
+    --font-mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;}
+  code{white-space:nowrap;}
+  html{scroll-behavior:auto;}
+  @media (prefers-reduced-motion:no-preference){ html{scroll-behavior:smooth;} }
+  body{background:var(--paper); color:var(--ink); font-family:var(--font-cjk); margin:0; -webkit-font-smoothing:antialiased;}
+  ::selection{background:#C9E0D6;}
+
+  /* ---------- Rail ---------- */
+  .rail{
+    position:fixed; left:0; top:0; bottom:0; width:288px;
+    border-right:1px solid var(--hair); background:var(--paper-raised);
+    padding:28px 22px; display:flex; flex-direction:column; gap:26px; z-index:10;
+    overflow-y:auto;
+  }
+  .rail-brand{font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; color:var(--muted); text-transform:uppercase;}
+  .rail-brand b{color:var(--ink); font-weight:700;}
+  .legend{display:flex; flex-direction:column; gap:12px;}
+  .legend-title{font-family:var(--font-mono); font-size:10.5px; letter-spacing:.1em; color:var(--muted); text-transform:uppercase; margin-bottom:2px;}
+  .legend-item{display:flex; align-items:flex-start; gap:9px;}
+  .legend-item .name{font-family:var(--font-mono); font-size:11.5px; font-weight:700; color:var(--ink); line-height:1.4; word-break:break-all;}
+  .legend-item .desc{font-size:11px; color:var(--muted); line-height:1.4;}
+  .dot{width:9px; height:9px; border-radius:50%; flex:none; margin-top:5px;}
+  .nav{display:flex; flex-direction:column; gap:2px; border-top:1px solid var(--hair); padding-top:16px;}
+  .nav a{
+    font-family:var(--font-mono); font-size:12px; color:var(--muted); text-decoration:none;
+    padding:6px 8px; border-radius:5px; display:flex; gap:8px; transition:background .15s,color .15s;
+  }
+  .nav a .n{color:var(--muted); width:1.4em; flex:none;}
+  .nav a:hover, .nav a:focus-visible{background:var(--paper); color:var(--ink); outline:none;}
+  .nav a.active{background:#EAF1EE; color:var(--solution); font-weight:600;}
+  .nav a:focus-visible{outline:2px solid var(--solution); outline-offset:2px;}
+
+  /* ---------- Slides ---------- */
+  .slides{margin-left:288px;}
+  .slide{
+    min-height:100vh; padding:76px 64px; display:flex; flex-direction:column; justify-content:center;
+    border-bottom:1px solid var(--hair);
+  }
+  .slide-inner{max-width:1180px; margin:0 auto; width:100%;}
+  .eyebrow{font-family:var(--font-mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin:0 0 14px;}
+  .eyebrow b{color:var(--ink);}
+  h2.title{font-size:clamp(26px,3.4vw,40px); font-weight:700; text-wrap:balance; margin:0 0 10px; line-height:1.25;}
+  p.sub{font-size:15.5px; color:var(--muted); max-width:64ch; line-height:1.75; margin:0 0 40px;}
+
+  /* ---------- Title slide ---------- */
+  .hero{display:flex; flex-direction:column; gap:36px;}
+  .hero h1{font-size:clamp(34px,5vw,56px); font-weight:700; line-height:1.15; margin:0; text-wrap:balance;}
+  .hero-sub{font-size:17px; color:var(--muted); max-width:56ch; line-height:1.7;}
+  .toc-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px 28px; margin-top:8px;}
+  .toc-item{display:flex; gap:12px; align-items:baseline; padding:10px 0; border-bottom:1px solid var(--hair); font-size:14.5px;}
+  .toc-item .n{font-family:var(--font-mono); color:var(--muted); font-size:12.5px; width:2em; flex:none;}
+
+  /* ---------- Cards ---------- */
+  .cards{display:grid; gap:16px;}
+  .cards.g3{grid-template-columns:repeat(3,1fr);}
+  .cards.g4{grid-template-columns:repeat(2,1fr);}
+  .card{background:var(--paper-raised); border:1px solid var(--hair); border-radius:8px; padding:22px 22px 20px;}
+  .card .k{font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; color:var(--muted); text-transform:uppercase; margin-bottom:8px;}
+  .card h3{font-size:16px; margin:0 0 8px; line-height:1.4;}
+  .card p{font-size:13.5px; color:var(--muted); line-height:1.75; margin:0;}
+  .card.accent-problem{border-top:3px solid var(--problem);}
+  .card.accent-solution{border-top:3px solid var(--solution);}
+  .card.accent-neutral{border-top:3px solid var(--trunk);}
+
+  /* ---------- Diagram primitives (pure CSS, no SVG) ---------- */
+  .track{position:relative; width:100%;}
+  .lane-line{position:absolute; height:3px; border-radius:2px;}
+  .lane-chip{
+    position:absolute; transform:translateY(-50%); font-family:var(--font-mono); font-size:10.5px;
+    padding:3px 9px; border-radius:20px; color:#fff; white-space:nowrap; font-weight:600; z-index:3;
+  }
+  .node{position:absolute; width:9px; height:9px; border-radius:50%; transform:translate(-50%,-50%); z-index:2; box-shadow:0 0 0 3px var(--paper);}
+  .node.big{width:12px; height:12px;}
+  .conn{position:absolute; width:3px; transform:translateX(-50%); z-index:1;}
+  .conn.dash{width:0; border-left:3px dashed; background:transparent !important;}
+  .conn.dot{width:0; border-left:3px dotted; background:transparent !important;}
+  .tri{position:absolute; width:0; height:0; transform:translateX(-50%); z-index:2;}
+  .tri.up{border-left:4px solid transparent; border-right:4px solid transparent; border-bottom:6px solid;}
+  .tri.down{border-left:4px solid transparent; border-right:4px solid transparent; border-top:6px solid;}
+  .callout{position:absolute; font-family:var(--font-mono); font-size:10.5px; color:var(--ink); white-space:nowrap;}
+  .callout.center{transform:translateX(-50%);}
+  .badge{
+    position:absolute; width:16px; height:16px; border-radius:50%; color:#fff; font-size:11px; font-weight:700;
+    display:flex; align-items:center; justify-content:center; transform:translate(-50%,-50%); z-index:3;
+  }
+  .gap-line{position:absolute; height:0; border-top:2px dashed var(--muted); opacity:.55;}
+  .gap-label{
+    position:absolute; transform:translate(-50%,-50%); background:var(--paper); padding:2px 8px;
+    font-family:var(--font-mono); font-size:10.5px; color:var(--muted); white-space:nowrap;
+  }
+  .fadecap{position:absolute; font-family:var(--font-mono); font-size:9.5px; color:var(--muted); white-space:nowrap;}
+
+  /* ---------- Vertical commit-node diagram (gitflow-style) ---------- */
+  .vtrack{position:relative; width:100%;}
+  .vtrack svg{position:absolute; inset:0; width:100%; height:100%; overflow:visible;}
+  .vlabel{
+    position:absolute; transform:translateX(-50%); font-family:var(--font-mono); font-size:11px;
+    font-weight:700; text-align:center; white-space:nowrap; letter-spacing:.01em;
+  }
+  .vlabel.bold{font-size:12px;}
+  .vnote{
+    position:absolute; transform:translate(-50%,-50%); font-family:var(--font-mono); font-size:10px;
+    color:var(--ink); background:var(--paper-raised); border:1px solid var(--hair); border-radius:7px;
+    padding:4px 9px; white-space:nowrap; box-shadow:0 2px 5px rgba(20,33,43,.09); line-height:1.5;
+  }
+  .vnote.tight{padding:2px 7px; font-size:9.5px; box-shadow:none; border:none; background:transparent; color:var(--muted);}
+  .vnote.warn{color:#fff; background:var(--problem); border:none; font-weight:700;}
+  .vtag{
+    position:absolute; transform:translate(-50%,-50%); font-family:var(--font-mono); font-size:10px; font-weight:700;
+    color:#fff; background:var(--release); border-radius:14px; padding:3px 10px; white-space:nowrap;
+    box-shadow:0 2px 5px rgba(20,33,43,.12);
+  }
+  .diagram-card{
+    background:var(--paper-raised); border:1px solid var(--hair); border-radius:12px;
+    padding:22px 20px 18px; box-shadow:0 6px 22px rgba(20,33,43,.07);
+  }
+  .diagram-card .vtrack{
+    background-image:radial-gradient(circle, #E4E9EB 1px, transparent 1px);
+    background-size:24px 24px; border-radius:6px; margin-top:0;
+  }
+  .time-hint{
+    position:absolute; left:-2px; top:26px; font-family:var(--font-mono); font-size:9px; color:var(--muted);
+    letter-spacing:.14em; writing-mode:vertical-rl; text-orientation:mixed; opacity:.7;
+  }
+  .step-badge{
+    position:absolute; width:19px; height:19px; border-radius:50%; background:var(--ink); color:#fff;
+    font-family:var(--font-mono); font-size:10px; font-weight:700; display:flex; align-items:center;
+    justify-content:center; transform:translate(-50%,-50%); box-shadow:0 2px 5px rgba(20,33,43,.28); z-index:4;
+  }
+  .diagram-legend{display:flex; flex-wrap:wrap; gap:9px 22px; margin-top:15px; padding-top:14px; border-top:1px solid var(--hair);}
+  .legend-row{display:flex; align-items:flex-start; gap:8px; font-size:12px; color:var(--ink); line-height:1.55; flex:1 1 230px;}
+  .legend-row .b{
+    width:17px; height:17px; border-radius:50%; background:var(--ink); color:#fff; font-family:var(--font-mono);
+    font-size:9.5px; font-weight:700; display:flex; align-items:center; justify-content:center; flex:none; margin-top:1px;
+  }
+
+  /* ---------- Comparison layout ---------- */
+  .compare-grid{display:flex; flex-direction:column; gap:30px;}
+  .compare-divider{height:1px; background:var(--hair); margin:2px 0;}
+  .compare-col{display:flex; flex-direction:column; gap:16px;}
+  .compare-head{display:flex; align-items:center; gap:10px;}
+  .compare-head .chip{
+    font-family:var(--font-mono); font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+    padding:4px 10px; border-radius:20px; color:#fff;
+  }
+  .compare-head h3{margin:0; font-size:18px;}
+  .compare-caption{font-size:13px; color:var(--muted); line-height:1.75; border-top:1px solid var(--hair); padding-top:12px;}
+  .compare-caption b{color:var(--ink);}
+  .core-diff{
+    margin-top:30px; padding:16px 20px; background:var(--paper-raised); border:1px solid var(--hair); border-radius:8px;
+    font-size:13.5px; color:var(--ink); line-height:1.8;
+  }
+  .core-diff b{color:var(--solution);}
+
+  /* ---------- Scenario layout ---------- */
+  .scenario-grid{display:grid; grid-template-columns:1.15fr 0.85fr; gap:44px; align-items:center;}
+  .steps{display:flex; flex-direction:column; gap:14px;}
+  .step{display:flex; gap:12px;}
+  .step .num{
+    font-family:var(--font-mono); font-size:11.5px; font-weight:700; color:#fff; background:var(--trunk);
+    width:20px; height:20px; border-radius:50%; flex:none; display:flex; align-items:center; justify-content:center;
+  }
+  .step p{margin:0; font-size:13.5px; line-height:1.7; color:var(--ink);}
+  .step code{background:var(--paper); border:1px solid var(--hair); border-radius:4px; padding:1px 6px; font-family:var(--font-mono); font-size:12px;}
+  .decision-pair{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:18px;}
+  .decision-pair .card{margin:0;}
+
+  /* ---------- Rule / question cards ---------- */
+  .rule-num{font-family:var(--font-mono); font-size:20px; font-weight:700; color:var(--hair); position:absolute; top:14px; right:16px;}
+  .card{position:relative;}
+  .qmark{font-family:var(--font-mono); font-size:11px; color:var(--muted); letter-spacing:.08em;}
+  .suggestion-box{margin-top:10px; padding:10px 12px; background:#EAF1EE; border-radius:6px; font-size:12px; line-height:1.65; color:var(--ink);}
+  .suggestion-box .tag{display:block; font-family:var(--font-mono); font-size:10px; font-weight:700; color:var(--solution); text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px;}
+
+  @media (max-width:980px){
+    .rail{display:none;}
+    .slides{margin-left:0;}
+    .compare-grid{grid-template-columns:1fr;}
+    .compare-divider{display:none;}
+    .scenario-grid{grid-template-columns:1fr;}
+    .cards.g3, .cards.g4{grid-template-columns:1fr;}
+    .toc-grid{grid-template-columns:1fr;}
+  }
+</style>
+
+<nav class="rail" aria-label="投影片導覽">
+  <div class="rail-brand"><b>Sprint 分支</b> 流程提案</div>
+  <div class="legend">
+    <div class="legend-title">圖例</div>
+    <div class="legend-item"><span class="dot" style="background:var(--trunk)"></span><span><div class="name">dev2</div><div class="desc">主幹</div></span></div>
+    <div class="legend-item"><span class="dot" style="background:var(--problem)"></span><span><div class="name">forQA</div><div class="desc">現行整合分支</div></span></div>
+    <div class="legend-item"><span class="dot" style="background:var(--solution)"></span><span><div class="name">dev_20260903</div><div class="desc">新版 Sprint 分支</div></span></div>
+    <div class="legend-item"><span class="dot" style="background:var(--feat-a)"></span><span><div class="name">feature/OKF-1234</div><div class="desc">需求分支示例</div></span></div>
+    <div class="legend-item"><span class="dot" style="background:var(--feat-b)"></span><span><div class="name">feature/OKF-1235</div><div class="desc">需求分支示例</div></span></div>
+    <div class="legend-item"><span class="dot" style="background:var(--release)"></span><span><div class="name">dev2_2.0.86_0827</div><div class="desc">發版分支（現行命名）</div></span></div>
+    <div class="legend-item"><span class="dot" style="background:var(--release)"></span><span><div class="name">release_20260903</div><div class="desc">發版分支（新版命名）</div></span></div>
+  </div>
+  <div class="nav" id="railnav">
+    <a href="#s0"><span class="n">00</span>標題</a>
+    <a href="#s1"><span class="n">01</span>上下比對</a>
+    <a href="#s2"><span class="n">02</span>現行痛點</a>
+    <a href="#s3"><span class="n">03</span>新版機制</a>
+    <a href="#s4"><span class="n">04</span>延期分支換基底</a>
+    <a href="#s5"><span class="n">05</span>提審被拒修復</a>
+    <a href="#s6"><span class="n">06</span>延期需求處理</a>
+    <a href="#s7"><span class="n">07</span>規則總覽</a>
+    <a href="#s8"><span class="n">08</span>開放討論</a>
+  </div>
+</nav>
+
+<div class="slides">
+
+  <!-- ================= SLIDE 0 — TITLE ================= -->
+  <section class="slide" id="s0">
+    <div class="slide-inner hero">
+      <div>
+        <p class="eyebrow">GIT WORKFLOW — 提案討論稿</p>
+        <h1>Sprint 分支流程改版</h1>
+        <p class="hero-sub">解決同期需求分支彼此看不到代碼、forQA 與發版分支不一致的老問題。以下依序說明現行流程、新版流程、三個邊界情境，以及待團隊會議定案的規則與問題。</p>
+      </div>
+      <div class="toc-grid">
+        <div class="toc-item"><span class="n">01</span>現行 vs 新版流程上下比對</div>
+        <div class="toc-item"><span class="n">02</span>現行流程的三個痛點</div>
+        <div class="toc-item"><span class="n">03</span>新版流程的核心機制</div>
+        <div class="toc-item"><span class="n">04</span>情境：延期分支跨 Sprint 換基底</div>
+        <div class="toc-item"><span class="n">05</span>情境：提審被拒的修復路徑</div>
+        <div class="toc-item"><span class="n">06</span>情境：需求延期（待通知恢復）</div>
+        <div class="toc-item"><span class="n">07</span>合併與同步規則總覽</div>
+        <div class="toc-item"><span class="n">08</span>待團隊會議定案的開放問題</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SLIDE 1 — COMPARISON ================= -->
+  <section class="slide" id="s1">
+    <div class="slide-inner">
+      <p class="eyebrow">01 — BEFORE / AFTER</p>
+      <h2 class="title">現行流程 vs 新版流程</h2>
+      <p class="sub">同一個時間軸、同樣的五條線位置上下對照——差異全部集中在第二條線：現行是「用後即丟」的 forQA，新版是「持續存在、雙向同步」的 Sprint 分支。</p>
+
+      <div class="compare-grid">
+        <!-- 現行 -->
+        <div class="compare-col">
+          <div class="compare-head"><span class="chip" style="background:var(--problem)">現行</span><h3>需求分支彼此隔離</h3></div>
+          <div class="diagram-card">
+          <div class="vtrack" style="aspect-ratio:1180 / 320; position:relative;">
+            <div class="time-hint" style="writing-mode:horizontal-tb; left:20px; top:-14px;">TIME →</div>
+
+            <svg viewBox="0 0 1180 320" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <marker id="cf-trunk" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--trunk)"/></marker>
+                <marker id="cf-a" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--feat-a)"/></marker>
+                <marker id="cf-b" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--feat-b)"/></marker>
+                <marker id="cf-rel" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--release)"/></marker>
+              </defs>
+              <!-- lane rails -->
+              <line x1="20" y1="50" x2="1160" y2="50" style="stroke:#E4E9EB; stroke-width:2"/>
+              <line x1="20" y1="110" x2="1160" y2="110" style="stroke:#E4E9EB; stroke-width:2"/>
+              <line x1="20" y1="170" x2="1160" y2="170" style="stroke:#E4E9EB; stroke-width:2"/>
+              <line x1="20" y1="230" x2="1160" y2="230" style="stroke:#E4E9EB; stroke-width:2"/>
+              <line x1="20" y1="290" x2="1160" y2="290" style="stroke:#E4E9EB; stroke-width:2"/>
+
+              <!-- same-lane continuation (no arrowhead) -->
+              <line x1="310" y1="170" x2="390" y2="170" style="stroke:var(--trunk); stroke-width:2.5"/>
+              <line x1="390" y1="50" x2="510" y2="50" style="stroke:var(--feat-a); stroke-width:2.5"/>
+              <line x1="510" y1="50" x2="630" y2="50" style="stroke:var(--feat-a); stroke-width:2.5"/>
+              <line x1="425" y1="110" x2="540" y2="110" style="stroke:var(--feat-b); stroke-width:2.5"/>
+              <line x1="540" y1="110" x2="650" y2="110" style="stroke:var(--feat-b); stroke-width:2.5"/>
+              <line x1="880" y1="290" x2="910" y2="290" style="stroke:var(--release); stroke-width:2.5"/>
+              <line x1="1020" y1="170" x2="1100" y2="170" style="stroke:var(--trunk); stroke-width:2.5"/>
+
+              <!-- meaningful transitions -->
+              <line x1="390" y1="170" x2="390" y2="50" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#cf-a)"/>
+              <line x1="390" y1="170" x2="425" y2="170" style="stroke:var(--trunk); stroke-width:2.5" marker-end="url(#cf-trunk)"/>
+              <line x1="425" y1="170" x2="425" y2="110" style="stroke:var(--feat-b); stroke-width:2.5" marker-end="url(#cf-b)"/>
+
+              <line x1="630" y1="50" x2="740" y2="230" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#cf-a)"/>
+              <line x1="650" y1="110" x2="770" y2="230" style="stroke:var(--feat-b); stroke-width:2.5" marker-end="url(#cf-b)"/>
+
+              <line x1="630" y1="50" x2="880" y2="290" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#cf-a)"/>
+              <line x1="650" y1="110" x2="910" y2="290" style="stroke:var(--feat-b); stroke-width:2.5" marker-end="url(#cf-b)"/>
+
+              <line x1="910" y1="290" x2="970" y2="290" style="stroke:var(--release); stroke-width:2.5" marker-end="url(#cf-rel)"/>
+              <line x1="970" y1="290" x2="1020" y2="170" style="stroke:var(--release); stroke-width:2.5" marker-end="url(#cf-trunk)"/>
+
+              <!-- nodes -->
+              <circle cx="310" cy="170" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="390" cy="170" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="425" cy="170" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="390" cy="50" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="510" cy="50" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="630" cy="50" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="425" cy="110" r="7" style="fill:var(--feat-b); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="540" cy="110" r="7" style="fill:var(--feat-b); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="650" cy="110" r="7" style="fill:var(--feat-b); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="740" cy="230" r="9" style="fill:var(--problem); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="770" cy="230" r="9" style="fill:var(--problem); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="880" cy="290" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="910" cy="290" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="970" cy="290" r="9" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="1020" cy="170" r="9" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="1100" cy="170" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
+            </svg>
+
+            <div class="lane-chip" style="top:15.6%; left:8px; background:var(--feat-a);">feature/OKF-1234</div>
+            <div class="lane-chip" style="top:34.4%; left:8px; background:var(--feat-b);">feature/OKF-1235</div>
+            <div class="lane-chip" style="top:53.1%; left:8px; background:var(--trunk);">dev2</div>
+            <div class="lane-chip" style="top:71.9%; left:8px; background:var(--problem);">forQA</div>
+            <div class="lane-chip" style="top:90.6%; left:8px; background:var(--release);">dev2_2.0.86_0827（發版分支）</div>
+
+            <div class="step-badge" style="left:41.5%; top:24.3%;">1</div>
+            <div class="step-badge" style="left:64%; top:71.9%;">2</div>
+            <div class="step-badge" style="left:72%; top:81.3%;">3</div>
+            <div class="step-badge" style="left:84%; top:65.6%;">4</div>
+          </div>
+          <div class="diagram-legend">
+            <div class="legend-row"><span class="b">1</span>需求分支開發期間完全看不到彼此</div>
+            <div class="legend-row"><span class="b">2</span>相依衝突在 forQA 才第一次出現，兩邊都無法修</div>
+            <div class="legend-row"><span class="b">3</span>主管把需求分支合併到發版分支</div>
+            <div class="legend-row"><span class="b">4</span>送審後合併回 dev2</div>
+          </div>
+          </div>
+          <div class="compare-caption">需求分支各自從 dev2 切出，開發期間<b>完全看不到彼此</b>；第一次相遇是在 forQA 打包時，但 forQA 改了沒意義，衝突無處可修。</div>
+        </div>
+
+        <div class="compare-divider"></div>
+
+        <!-- 新版 -->
+        <div class="compare-col">
+          <div class="compare-head"><span class="chip" style="background:var(--solution)">新版</span><h3>共用 Sprint 分支雙向同步</h3></div>
+          <div class="diagram-card">
+          <div class="vtrack" style="aspect-ratio:1180 / 320; position:relative;">
+            <div class="time-hint" style="writing-mode:horizontal-tb; left:20px; top:-14px;">TIME →</div>
+
+            <svg viewBox="0 0 1180 320" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <marker id="nf-trunk" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--trunk)"/></marker>
+                <marker id="nf-a" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--feat-a)"/></marker>
+                <marker id="nf-b" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--feat-b)"/></marker>
+                <marker id="nf-sol" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--solution)"/></marker>
+                <marker id="nf-rel" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--release)"/></marker>
+              </defs>
+              <!-- lane rails -->
+              <line x1="20" y1="50" x2="1160" y2="50" style="stroke:#E4E9EB; stroke-width:2"/>
+              <line x1="20" y1="110" x2="1160" y2="110" style="stroke:#E4E9EB; stroke-width:2"/>
+              <line x1="20" y1="170" x2="1160" y2="170" style="stroke:#E4E9EB; stroke-width:2"/>
+              <line x1="20" y1="230" x2="1160" y2="230" style="stroke:#E4E9EB; stroke-width:2"/>
+              <line x1="20" y1="290" x2="1160" y2="290" style="stroke:#E4E9EB; stroke-width:2"/>
+
+              <!-- same-lane continuation -->
+              <line x1="310" y1="170" x2="390" y2="170" style="stroke:var(--trunk); stroke-width:2.5"/>
+              <line x1="430" y1="230" x2="450" y2="230" style="stroke:var(--solution); stroke-width:2.5"/>
+              <line x1="430" y1="50" x2="500" y2="50" style="stroke:var(--feat-a); stroke-width:2.5"/>
+              <line x1="450" y1="110" x2="520" y2="110" style="stroke:var(--feat-b); stroke-width:2.5"/>
+              <line x1="620" y1="50" x2="700" y2="50" style="stroke:var(--feat-a); stroke-width:2.5"/>
+              <line x1="640" y1="110" x2="720" y2="110" style="stroke:var(--feat-b); stroke-width:2.5"/>
+              <line x1="1040" y1="170" x2="1110" y2="170" style="stroke:var(--trunk); stroke-width:2.5"/>
+
+              <!-- meaningful transitions -->
+              <line x1="390" y1="170" x2="390" y2="230" style="stroke:var(--solution); stroke-width:2.5" marker-end="url(#nf-sol)"/>
+              <line x1="450" y1="230" x2="430" y2="50" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#nf-a)"/>
+              <line x1="450" y1="230" x2="450" y2="110" style="stroke:var(--feat-b); stroke-width:2.5" marker-end="url(#nf-b)"/>
+
+              <line x1="500" y1="50" x2="570" y2="230" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#nf-sol)"/>
+              <line x1="570" y1="230" x2="620" y2="50" style="stroke:var(--feat-a); stroke-width:2; stroke-dasharray:7,5; opacity:.7" marker-end="url(#nf-a)"/>
+              <line x1="520" y1="110" x2="590" y2="230" style="stroke:var(--feat-b); stroke-width:2.5" marker-end="url(#nf-sol)"/>
+              <line x1="590" y1="230" x2="640" y2="110" style="stroke:var(--feat-b); stroke-width:2; stroke-dasharray:7,5; opacity:.7" marker-end="url(#nf-b)"/>
+
+              <line x1="700" y1="50" x2="770" y2="230" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#nf-sol)"/>
+              <line x1="720" y1="110" x2="790" y2="230" style="stroke:var(--feat-b); stroke-width:2.5" marker-end="url(#nf-sol)"/>
+
+              <line x1="770" y1="230" x2="840" y2="230" style="stroke:var(--solution); stroke-width:2.5"/>
+              <line x1="790" y1="230" x2="840" y2="230" style="stroke:var(--solution); stroke-width:2.5"/>
+              <line x1="840" y1="230" x2="940" y2="290" style="stroke:var(--solution); stroke-width:2.5" marker-end="url(#nf-rel)"/>
+              <line x1="940" y1="290" x2="1040" y2="170" style="stroke:var(--release); stroke-width:2.5" marker-end="url(#nf-trunk)"/>
+              <line x1="1040" y1="170" x2="1120" y2="240" style="stroke:var(--solution); stroke-width:2; stroke-dasharray:3,5; opacity:.6" marker-end="url(#nf-sol)"/>
+
+              <!-- nodes -->
+              <circle cx="310" cy="170" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="390" cy="170" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="390" cy="230" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="430" cy="230" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="450" cy="230" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="430" cy="50" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="450" cy="110" r="7" style="fill:var(--feat-b); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="500" cy="50" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="570" cy="230" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="620" cy="50" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="520" cy="110" r="7" style="fill:var(--feat-b); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="590" cy="230" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="640" cy="110" r="7" style="fill:var(--feat-b); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="700" cy="50" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="720" cy="110" r="7" style="fill:var(--feat-b); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="770" cy="230" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="790" cy="230" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="840" cy="230" r="9" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="940" cy="290" r="9" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="1040" cy="170" r="8" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="1110" cy="170" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
+            </svg>
+
+            <div class="lane-chip" style="top:15.6%; left:8px; background:var(--feat-a);">feature/OKF-1234</div>
+            <div class="lane-chip" style="top:34.4%; left:8px; background:var(--feat-b);">feature/OKF-1235</div>
+            <div class="lane-chip" style="top:53.1%; left:8px; background:var(--trunk);">dev2</div>
+            <div class="lane-chip" style="top:71.9%; left:8px; background:var(--solution);">dev_20260903</div>
+            <div class="lane-chip" style="top:90.6%; left:8px; background:var(--release);">release_20260903</div>
+
+            <div class="step-badge" style="left:50%; top:53%;">1</div>
+            <div class="step-badge" style="left:79%; top:79%;">2</div>
+            <div class="step-badge" style="left:88%; top:59%;">3</div>
+            <div class="step-badge" style="left:95%; top:73%;">4</div>
+          </div>
+          <div class="diagram-legend">
+            <div class="legend-row"><span class="b">1</span>feature/OKF-1234、1235 定期把 dev_20260903 同步回自己分支，透過同一條線間接看到彼此</div>
+            <div class="legend-row"><span class="b">2</span>主管從 dev_20260903 切出 release，可選擇性 revert</div>
+            <div class="legend-row"><span class="b">3</span>一提審就合併回 dev2，不等審核通過</div>
+            <div class="legend-row"><span class="b">4</span>下一期從新的 dev2 重新切 Sprint 分支，循環</div>
+          </div>
+          </div>
+          <div class="compare-caption">feature/OKF-1234、1235 從共用的 <b>dev_20260903</b> 切出，開發期間定期把 dev_20260903 同步回自己分支——<b>透過同一條 sprint 分支間接看到彼此進度</b>，相依問題提早在自己分支修好。</div>
+        </div>
+      </div>
+
+      <div class="core-diff">核心改動：把「用後即丟」的 forQA，換成「這期唯一、持續存在」的 <b>Sprint 分支</b>。需求分支的關係從「只在打包那一刻短暫相遇」變成「整個開發期間持續互相同步」。</div>
+    </div>
+  </section>
+
+  <!-- ================= SLIDE 2 — CURRENT PAIN POINTS ================= -->
+  <section class="slide" id="s2">
+    <div class="slide-inner">
+      <p class="eyebrow">02 — 現行流程</p>
+      <h2 class="title">現行流程的三個痛點</h2>
+      <p class="sub">問題不是紀律不夠，而是 forQA 同時身兼兩個互相衝突的角色。</p>
+      <div class="cards g3">
+        <div class="card accent-problem">
+          <div class="k">痛點 01</div>
+          <h3>需求分支彼此隔離</h3>
+          <p>同期所有需求分支都從 dev2 切出，彼此完全看不到對方代碼。若兩個需求有相依性，開發階段無法互相使用對方尚未合併的代碼。</p>
+        </div>
+        <div class="card accent-problem">
+          <div class="k">痛點 02</div>
+          <h3>forQA 改了沒意義</h3>
+          <p>forQA 是打包用的匯流分支，QA 在這裡第一次看到大家的代碼相遇。但 forQA 上的修改下次合併就會被蓋掉，衝突/相依問題在自己需求分支也看不到對方，兩邊都無法修。</p>
+        </div>
+        <div class="card accent-problem">
+          <div class="k">痛點 03</div>
+          <h3>手動合併的風險</h3>
+          <p>發版時主管手動把各需求分支合併到發版分支，容易和 forQA 實際測過的狀態不一致（過去已發生 OKF-1332 合併參數遺失的事故）。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SLIDE 3 — NEW MECHANISM ================= -->
+  <section class="slide" id="s3">
+    <div class="slide-inner">
+      <p class="eyebrow">03 — 新版流程</p>
+      <h2 class="title">新版流程的核心機制</h2>
+      <p class="sub">四個機制環環相扣，共同解決「隔離」與「不一致」兩個問題。</p>
+      <div class="cards g4">
+        <div class="card accent-solution">
+          <div class="k">機制 01</div>
+          <h3>Sprint 分支持續存在</h3>
+          <p>取代 forQA，作為這期唯一的整合分支。需求分支從這裡切出，也合併回這裡；QA 直接從這裡打包驗證。</p>
+        </div>
+        <div class="card accent-solution">
+          <div class="k">機制 02</div>
+          <h3>雙向同步</h3>
+          <p>需求分支開發期間要定期把 sprint 分支同步回自己（單人分支可 rebase + force-push，多人共修用 merge），相依問題提早在自己分支發現並修復。</p>
+        </div>
+        <div class="card accent-solution">
+          <div class="k">機制 03</div>
+          <h3>一次 revert 就乾淨</h3>
+          <p>每個需求對 sprint 分支都是一個完整的 merge commit，需要下架時 <code style="font-family:var(--font-mono)">git revert -m 1</code> 一次搞定，不需要事先 squash。</p>
+        </div>
+        <div class="card accent-solution">
+          <div class="k">機制 04</div>
+          <h3>Release 分支即歷史紀錄</h3>
+          <p>主管從 sprint 分支切出 release，可選擇性 revert；一提審就合回 dev2（不等審核），release 分支保留不刪，成為每個版本的歷史紀錄。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SLIDE 4 — DELAYED BRANCH REBASE ================= -->
+  <section class="slide" id="s4">
+    <div class="slide-inner">
+      <p class="eyebrow">04 — 邊界情境</p>
+      <h2 class="title">情境一：需求做不完，跨到下一個 Sprint</h2>
+      <p class="sub">延期分支要「換基底」接到新的 sprint 分支，之後比照這期新開的需求分支正常運作。</p>
+      <div class="diagram-card" style="margin-bottom:26px;">
+        <div class="vtrack" style="aspect-ratio:980 / 240; position:relative;">
+          <div class="time-hint" style="writing-mode:horizontal-tb; left:20px; top:-14px;">TIME →</div>
+
+          <svg viewBox="0 0 980 240" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <marker id="s4-a" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--feat-a)"/></marker>
+            </defs>
+            <!-- lane rails (only where the branch actually exists) -->
+            <line x1="180" y1="60" x2="560" y2="60" style="stroke:#E4E9EB; stroke-width:2"/>
+            <line x1="600" y1="120" x2="940" y2="120" style="stroke:#E4E9EB; stroke-width:2"/>
+            <line x1="240" y1="185" x2="900" y2="185" style="stroke:#E4E9EB; stroke-width:2"/>
+
+            <!-- dev_0903 own continuation -->
+            <line x1="180" y1="60" x2="240" y2="60" style="stroke:var(--solution); stroke-width:2.5"/>
+            <line x1="240" y1="60" x2="380" y2="60" style="stroke:var(--solution); stroke-width:2.5"/>
+            <line x1="380" y1="60" x2="560" y2="60" style="stroke:var(--solution); stroke-width:2.5; opacity:.45"/>
+
+            <!-- F own continuation -->
+            <line x1="240" y1="185" x2="380" y2="185" style="stroke:var(--feat-a); stroke-width:2.5"/>
+            <line x1="380" y1="185" x2="520" y2="185" style="stroke:var(--feat-a); stroke-width:2.5"/>
+            <line x1="520" y1="185" x2="660" y2="185" style="stroke:var(--feat-a); stroke-width:2.5"/>
+            <line x1="660" y1="185" x2="760" y2="185" style="stroke:var(--feat-a); stroke-width:2.5"/>
+            <line x1="760" y1="185" x2="900" y2="185" style="stroke:var(--feat-a); stroke-width:2.5"/>
+
+            <!-- dev_0917 own continuation -->
+            <line x1="600" y1="120" x2="680" y2="120" style="stroke:#2E8F63; stroke-width:2.5"/>
+            <line x1="680" y1="120" x2="940" y2="120" style="stroke:#2E8F63; stroke-width:2.5"/>
+
+            <!-- meaningful transitions -->
+            <line x1="240" y1="60" x2="240" y2="185" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#s4-a)"/>
+            <line x1="380" y1="185" x2="380" y2="60" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#s4-a)"/>
+            <line x1="660" y1="185" x2="680" y2="120" style="stroke:var(--feat-a); stroke-width:2; stroke-dasharray:3,5" marker-end="url(#s4-a)"/>
+
+            <!-- nodes -->
+            <circle cx="180" cy="60" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="240" cy="60" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="380" cy="60" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="560" cy="60" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3; opacity:.55"/>
+            <circle cx="240" cy="185" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="380" cy="185" r="8" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="520" cy="185" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="660" cy="185" r="8" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="760" cy="185" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="900" cy="185" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="600" cy="120" r="7" style="fill:#2E8F63; stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="680" cy="120" r="8" style="fill:#2E8F63; stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="940" cy="120" r="7" style="fill:#2E8F63; stroke:var(--paper-raised); stroke-width:3"/>
+          </svg>
+
+          <div class="lane-chip" style="top:25%; left:8px; background:var(--solution);">dev_20260903</div>
+          <div class="lane-chip" style="top:50%; left:41%; background:#2E8F63;">dev_20260917</div>
+          <div class="lane-chip" style="top:77%; left:8px; background:var(--feat-a);">feature/OKF-1300</div>
+
+          <div class="step-badge" style="left:39%; top:25%;">1</div>
+          <div class="step-badge" style="left:57%; top:25%;">2</div>
+          <div class="step-badge" style="left:71%; top:60%;">3</div>
+          <div class="step-badge" style="left:88%; top:77%;">4</div>
+        </div>
+        <div class="diagram-legend">
+          <div class="legend-row"><span class="b">1</span>feature/OKF-1300 先出 MVP，部分合併進 dev_20260903，剩下的續做</div>
+          <div class="legend-row"><span class="b">2</span>dev_20260903 切出 release 後視為凍結，不再接受新 commit</div>
+          <div class="legend-row"><span class="b">3</span><span>已部分合併過，換基底要用 <code style="font-family:var(--font-mono)">rebase --onto</code> 排除重複</span></div>
+          <div class="legend-row"><span class="b">4</span>之後比照這期新開的需求分支，正常參與同步與合併</div>
+        </div>
+      </div>
+      <div class="scenario-grid" style="grid-template-columns:1fr;">
+        <div class="steps">
+          <div class="step"><span class="num">1</span><p>確認 feature/OKF-1300 有沒有已經<b>部分</b>合併進 <code>dev_20260903</code>（如先出 MVP、剩下續做）。</p></div>
+          <div class="step"><span class="num">2</span><p>從未合併過 → 直接 <code>git rebase dev_20260917 feature/OKF-1300</code> 換基底即可。</p></div>
+          <div class="step"><span class="num">3</span><p>已部分合併過 → 用 <code>git rebase --onto dev_20260917 dev_20260903 feature/OKF-1300</code>，只重放獨有的 commit，避免重複。</p></div>
+          <div class="step"><span class="num">4</span><p>更乾淨的建議：分支一旦 merge 進 sprint 分支就視為結案，<b>續做開新分支</b>，避免復用已合併分支導致混亂。</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SLIDE 5 — REJECTION FIX PATH ================= -->
+  <section class="slide" id="s5">
+    <div class="slide-inner">
+      <p class="eyebrow">05 — 邊界情境</p>
+      <h2 class="title">情境二：提審被拒的修復路徑</h2>
+      <p class="sub">因為「一提審就合回 dev2」（不等審核通過），審核被拒需要修復時，要補做第二次同步。</p>
+      <div class="diagram-card" style="margin-bottom:26px;">
+        <div class="vtrack" style="aspect-ratio:980 / 240; position:relative;">
+          <div class="time-hint" style="writing-mode:horizontal-tb; left:20px; top:-14px;">TIME →</div>
+
+          <svg viewBox="0 0 980 240" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <marker id="s5-rel" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--release)"/></marker>
+              <marker id="s5-sol" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--solution)"/></marker>
+            </defs>
+            <!-- lane rails -->
+            <line x1="140" y1="60" x2="920" y2="60" style="stroke:#E4E9EB; stroke-width:2"/>
+            <line x1="140" y1="130" x2="920" y2="130" style="stroke:#E4E9EB; stroke-width:2"/>
+            <line x1="460" y1="195" x2="920" y2="195" style="stroke:#E4E9EB; stroke-width:2"/>
+
+            <!-- release continuation (red segment = rejected window) -->
+            <line x1="140" y1="60" x2="240" y2="60" style="stroke:var(--release); stroke-width:2.5"/>
+            <line x1="240" y1="60" x2="520" y2="60" style="stroke:var(--release); stroke-width:2.5"/>
+            <line x1="520" y1="60" x2="620" y2="60" style="stroke:var(--problem); stroke-width:2.5"/>
+            <line x1="620" y1="60" x2="720" y2="60" style="stroke:var(--release); stroke-width:2.5"/>
+            <line x1="720" y1="60" x2="900" y2="60" style="stroke:var(--release); stroke-width:2.5"/>
+
+            <!-- dev2 continuation -->
+            <line x1="140" y1="130" x2="240" y2="130" style="stroke:var(--trunk); stroke-width:2.5"/>
+            <line x1="240" y1="130" x2="460" y2="130" style="stroke:var(--trunk); stroke-width:2.5"/>
+            <line x1="460" y1="130" x2="720" y2="130" style="stroke:var(--trunk); stroke-width:2.5"/>
+            <line x1="720" y1="130" x2="830" y2="130" style="stroke:var(--trunk); stroke-width:2.5"/>
+            <line x1="830" y1="130" x2="920" y2="130" style="stroke:var(--trunk); stroke-width:2.5"/>
+
+            <!-- dev_20260917 continuation -->
+            <line x1="460" y1="195" x2="830" y2="195" style="stroke:var(--solution); stroke-width:2.5"/>
+            <line x1="830" y1="195" x2="920" y2="195" style="stroke:var(--solution); stroke-width:2.5"/>
+
+            <!-- meaningful transitions -->
+            <line x1="240" y1="60" x2="240" y2="130" style="stroke:var(--release); stroke-width:2.5" marker-end="url(#s5-rel)"/>
+            <line x1="460" y1="130" x2="460" y2="195" style="stroke:var(--solution); stroke-width:2.5" marker-end="url(#s5-sol)"/>
+            <line x1="720" y1="60" x2="720" y2="130" style="stroke:var(--release); stroke-width:2.5" marker-end="url(#s5-rel)"/>
+            <line x1="830" y1="130" x2="830" y2="195" style="stroke:var(--solution); stroke-width:2.5" marker-end="url(#s5-sol)"/>
+
+            <!-- nodes -->
+            <circle cx="140" cy="60" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="240" cy="60" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="520" cy="60" r="9" style="fill:var(--problem); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="620" cy="60" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="720" cy="60" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="240" cy="130" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="460" cy="130" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="720" cy="130" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="830" cy="130" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="460" cy="195" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="830" cy="195" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
+          </svg>
+
+          <div class="lane-chip" style="top:25%; left:8px; background:var(--release);">release_20260903</div>
+          <div class="lane-chip" style="top:54.2%; left:8px; background:var(--trunk);">dev2</div>
+          <div class="lane-chip" style="top:81.25%; left:47%; background:var(--solution);">dev_20260917</div>
+
+          <div class="step-badge" style="left:24.5%; top:39.6%;">1</div>
+          <div class="step-badge" style="left:47%; top:66.7%;">2</div>
+          <div class="step-badge" style="left:56.6%; top:16.7%;">3</div>
+          <div class="step-badge" style="left:73.5%; top:39.6%;">4</div>
+          <div class="step-badge" style="left:84.7%; top:66.7%;">5</div>
+        </div>
+        <div class="diagram-legend">
+          <div class="legend-row"><span class="b">1</span>提審後，release_20260903 立即合併回 dev2（不等審核）</div>
+          <div class="legend-row"><span class="b">2</span>下一期 dev_20260917 從 dev2 切出，開始開發</div>
+          <div class="legend-row"><span class="b">3</span>審核被拒，修復 commit 直接寫在 release_20260903 上</div>
+          <div class="legend-row"><span class="b">4</span>確認可重新提審後，再合併回 dev2 一次</div>
+          <div class="legend-row"><span class="b">5</span>dev_20260917 主動同步 dev2，補上這次修復</div>
+        </div>
+      </div>
+      <div class="scenario-grid" style="grid-template-columns:1fr;">
+        <div class="steps">
+          <div class="step"><span class="num">1</span><p>修復不繞去 dev2 或下一期 sprint 分支，只改 <code>release_20260903</code>。</p></div>
+          <div class="step"><span class="num">2</span><p>沒有 forQA 了，建議直接從 <code>release_20260903</code> 打包做回歸測試再重新提審。</p></div>
+          <div class="step"><span class="num">3</span><p>修復 commit / 通知標注「審核拒絕修復」，方便追蹤這批代碼走的是非常規路徑。</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SLIDE 6 — POSTPONED FEATURE ================= -->
+  <section class="slide" id="s6">
+    <div class="slide-inner">
+      <p class="eyebrow">06 — 邊界情境</p>
+      <h2 class="title">情境三：需求延期（待通知恢復）</h2>
+      <p class="sub">已合併、甚至已過 QA 的需求，產品臨時要求本期不上線、且恢復時間不確定。</p>
+      <div class="diagram-card" style="margin-bottom:26px;">
+        <div class="vtrack" style="aspect-ratio:980 / 200; position:relative;">
+          <div class="time-hint" style="writing-mode:horizontal-tb; left:20px; top:-14px;">TIME →</div>
+
+          <svg viewBox="0 0 980 200" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <marker id="s6-a" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--feat-a)"/></marker>
+            </defs>
+            <!-- lane rails -->
+            <line x1="140" y1="60" x2="900" y2="60" style="stroke:#E4E9EB; stroke-width:2"/>
+            <line x1="240" y1="140" x2="520" y2="140" style="stroke:#E4E9EB; stroke-width:2"/>
+
+            <!-- sprint continuation -->
+            <line x1="140" y1="60" x2="240" y2="60" style="stroke:var(--solution); stroke-width:2.5"/>
+            <line x1="240" y1="60" x2="520" y2="60" style="stroke:var(--solution); stroke-width:2.5"/>
+            <line x1="520" y1="60" x2="650" y2="60" style="stroke:var(--solution); stroke-width:2.5"/>
+            <line x1="650" y1="60" x2="900" y2="60" style="stroke:var(--solution); stroke-width:2.5"/>
+
+            <!-- feature continuation -->
+            <line x1="240" y1="140" x2="380" y2="140" style="stroke:var(--feat-a); stroke-width:2.5"/>
+            <line x1="380" y1="140" x2="520" y2="140" style="stroke:var(--feat-a); stroke-width:2.5"/>
+
+            <!-- branch cut + merge -->
+            <line x1="240" y1="60" x2="240" y2="140" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#s6-a)"/>
+            <line x1="520" y1="140" x2="520" y2="60" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#s6-a)"/>
+
+            <!-- revert marker ring -->
+            <circle cx="650" cy="60" r="13" style="fill:none; stroke:var(--problem); stroke-width:2; stroke-dasharray:3,3"/>
+
+            <!-- nodes -->
+            <circle cx="140" cy="60" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="240" cy="60" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="380" cy="140" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="520" cy="60" r="9" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="650" cy="60" r="8" style="fill:var(--problem); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="900" cy="60" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
+          </svg>
+
+          <div class="lane-chip" style="top:30%; left:8px; background:var(--solution);">dev_20260903</div>
+          <div class="lane-chip" style="top:70%; left:8px; background:var(--feat-a);">feature/OKF-1400</div>
+
+          <div class="vtag" style="left:53%; top:12%; background:var(--ink);">tag: postponed/OKF-1400</div>
+          <div class="step-badge" style="left:24.5%; top:80%;">1</div>
+          <div class="step-badge" style="left:58%; top:47.5%;">2</div>
+          <div class="step-badge" style="left:68%; top:16%;">3</div>
+          <div class="step-badge" style="left:76%; top:47.5%;">4</div>
+        </div>
+        <div class="diagram-legend">
+          <div class="legend-row"><span class="b">1</span>feature/OKF-1400 已合併進 dev_20260903，甚至已過 QA 驗證</div>
+          <div class="legend-row"><span class="b">2</span>在 revert 前打一個 tag（如 postponed/OKF-1400）標記這個狀態</div>
+          <div class="legend-row"><span class="b">3</span><span>執行 <code style="font-family:var(--font-mono)">git revert -m 1</code>，把這個需求乾淨移除</span></div>
+          <div class="legend-row"><span class="b">4</span>SourceTree 右鍵沒有 parent 選項，改用內建 Terminal 手動下指令，不要依賴 GUI 按鈕</div>
+          <div class="legend-row"><span class="b">5</span><span>tag 是打在 <b>dev_20260903 自己的歷史</b>上（合併當下的完整快照），不是取代需求分支；恢復時把需求分支 <b>rebase 到當時最新的 sprint 分支</b>再重新合併，同「延期分支換基底」邏輯</span></div>
+        </div>
+      </div>
+      <div class="scenario-grid">
+        <div class="steps">
+          <div class="step"><span class="num">1</span><p>在 sprint 分支上直接 revert 該需求的 merge commit：<code>git revert -m 1</code>，越早做（切 release 前）越好。</p></div>
+          <div class="step"><span class="num">2</span><p>Revert 前檢查有沒有其他已合併需求依賴這段代碼，有相依要一併處理。</p></div>
+          <div class="step"><span class="num">3</span><p>不刪除原需求分支，並在 revert 前打一個 tag（如 <code>postponed/OKF-xxxx</code>）當作未來恢復的參照點。</p></div>
+          <div class="step"><span class="num">4</span><p>Revert commit 訊息標注單號與原因；同步更新 JIRA 單狀態為延期/暫停。</p></div>
+        </div>
+        <div class="decision-pair">
+          <div class="card accent-neutral">
+            <div class="k">恢復時機明確</div>
+            <h3>Git Revert 路徑</h3>
+            <p>以 tag 為基礎重新評估、cherry-pick 舊代碼再調整——不要單純 revert-the-revert，主線和需求本身可能都已變化。</p>
+          </div>
+          <div class="card accent-solution">
+            <div class="k">恢復時機不確定</div>
+            <h3>Feature Flag 路徑</h3>
+            <p>代碼照常合併上線、開關關閉即可，要恢復時直接開開關，不用處理跨 sprint 的 revert / un-revert。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SLIDE 7 — RULES SUMMARY ================= -->
+  <section class="slide" id="s7">
+    <div class="slide-inner">
+      <p class="eyebrow">07 — 規則總覽</p>
+      <h2 class="title">合併與同步規則</h2>
+      <p class="sub">四條可以直接寫進開發規章的規則，供會議定案。</p>
+      <div class="cards g4">
+        <div class="card">
+          <span class="rule-num">1</span>
+          <h3>Merge / Rebase 依所有權決定</h3>
+          <p>貢獻進 sprint 分支一律用 <code style="font-family:var(--font-mono)">merge --no-ff</code>；同步回單人開發的需求分支可用 rebase + force-push，多人共修才需要 merge。</p>
+        </div>
+        <div class="card">
+          <span class="rule-num">2</span>
+          <h3>禁止 squash-merge 進 sprint 分支</h3>
+          <p>Merge commit 本身 revert 已是原子操作，squash 對此沒有幫助，卻會切斷同步與 rebase --onto 所需的歷史關聯。</p>
+        </div>
+        <div class="card">
+          <span class="rule-num">3</span>
+          <h3>已合併分支不回頭改寫歷史</h3>
+          <p>合併前可自由用 <code style="font-family:var(--font-mono)">rebase -i</code> 整理 commit；合併後即結案，續做一律開新分支。</p>
+        </div>
+        <div class="card">
+          <span class="rule-num">4</span>
+          <h3>延期／延遲一律要可追蹤</h3>
+          <p>打 tag、commit 訊息標單號、同步更新 JIRA 狀態，確保未來任何人都能找到恢復的起點。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SLIDE 8 — OPEN QUESTIONS ================= -->
+  <section class="slide" id="s8">
+    <div class="slide-inner">
+      <p class="eyebrow">08 — 待定案</p>
+      <h2 class="title">開放討論問題</h2>
+      <p class="sub">三點需要團隊會議共識才能定案；一點已實測驗證，附上結論給大家參考。</p>
+      <div class="cards g4">
+        <div class="card accent-problem">
+          <span class="qmark">Q1</span>
+          <h3>Sprint 分支何時凍結？</h3>
+          <p>release 分支切出後，dev_0903 是否立刻視為凍結、不再接受 commit？若還有人繼續提交，revert 語意會混亂——更嚴重的是，dev_0903 本身不會合回 dev2（只有 release_xxx 會），凍結後才提交的 commit 會變成孤兒，永遠進不了 dev2。</p>
+          <div class="suggestion-box">
+            <span class="tag">建議方案（待會議確認）</span>
+            切 release 的當下就是凍結時刻，且要<b>公告</b>不是默契——主管切 release 前先在群組預告、給緩衝時間，時間到就切且視為凍結。凍結後若還要修東西，直接上 release_xxx（同「提審被拒修復路徑」邏輯）。可考慮用 GitLab 分支保護規則技術上強制唯讀，不完全依賴人記得。sprint 分支本身不用像 release 分支永久保留，合併完成後可以刪除。
+          </div>
+        </div>
+        <div class="card accent-problem">
+          <span class="qmark">Q2</span>
+          <h3>選擇性 revert 夠用嗎？</h3>
+          <p>新設計刻意讓需求分支互相依賴，一旦真的產生相依，release 分支單獨 revert 某需求可能無法乾淨移除——要不要搭配 feature flag？</p>
+        </div>
+        <div class="card accent-solution">
+          <span class="qmark" style="color:var(--solution); font-weight:700;">✓ 已解決</span>
+          <h3>打包工具吃得下動態分支名嗎？</h3>
+          <p>已實測確認：<code style="font-family:var(--font-mono)">/send-build</code> 不綁死分支名，直接打包當前分支；Telegram 路由表的全域預設本來就跟 forQA 現在指向同一個群，動態 sprint 分支不用改任何設定就能用，<b>不需要保留 forQA</b>。</p>
+        </div>
+        <div class="card accent-problem">
+          <span class="qmark">Q4</span>
+          <h3>雙向同步的頻率？</h3>
+          <p>需求分支多久要同步一次 sprint 分支？需要團隊訂出具體規則（如每日、每次要重驗前）。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  (function(){
+    var links = Array.prototype.slice.call(document.querySelectorAll('#railnav a'));
+    var sections = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+    if(!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var idx = sections.indexOf(entry.target);
+        if(idx === -1) return;
+        if(entry.isIntersecting){
+          links.forEach(function(l){ l.classList.remove('active'); });
+          links[idx].classList.add('active');
+        }
+      });
+    }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+    sections.forEach(function(s){ if(s) io.observe(s); });
+  })();
+</script>
