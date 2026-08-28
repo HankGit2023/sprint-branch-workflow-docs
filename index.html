@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<!-- saved from url=(0144)file:///private/tmp/claude-501/-Users-hank-app-flutter-okbet-app/3a25b639-a762-4d4d-b171-acb888b841eb/scratchpad/sprint_workflow_standalone.html -->
+<html lang="zh-Hant"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
 <title>Sprint 分支流程提案</title>
 <style>
   :root{
@@ -213,15 +220,16 @@
     <div class="legend-item"><span class="dot" style="background:var(--release)"></span><span><div class="name">release_20260903</div><div class="desc">發版分支（新版命名）</div></span></div>
   </div>
   <div class="nav" id="railnav">
-    <a href="#s0"><span class="n">00</span>標題</a>
-    <a href="#s1"><span class="n">01</span>上下比對</a>
-    <a href="#s2"><span class="n">02</span>現行痛點</a>
-    <a href="#s3"><span class="n">03</span>新版機制</a>
-    <a href="#s4"><span class="n">04</span>延期分支換基底</a>
-    <a href="#s5"><span class="n">05</span>提審被拒修復</a>
-    <a href="#s6"><span class="n">06</span>延期需求處理</a>
-    <a href="#s7"><span class="n">07</span>規則總覽</a>
-    <a href="#s8"><span class="n">08</span>開放討論</a>
+    <a href="file:///private/tmp/claude-501/-Users-hank-app-flutter-okbet-app/3a25b639-a762-4d4d-b171-acb888b841eb/scratchpad/sprint_workflow_standalone.html#s0" class="active"><span class="n">00</span>標題</a>
+    <a href="file:///private/tmp/claude-501/-Users-hank-app-flutter-okbet-app/3a25b639-a762-4d4d-b171-acb888b841eb/scratchpad/sprint_workflow_standalone.html#s1"><span class="n">01</span>上下比對</a>
+    <a href="file:///private/tmp/claude-501/-Users-hank-app-flutter-okbet-app/3a25b639-a762-4d4d-b171-acb888b841eb/scratchpad/sprint_workflow_standalone.html#s2"><span class="n">02</span>現行痛點</a>
+    <a href="file:///private/tmp/claude-501/-Users-hank-app-flutter-okbet-app/3a25b639-a762-4d4d-b171-acb888b841eb/scratchpad/sprint_workflow_standalone.html#s3"><span class="n">03</span>新版機制</a>
+    <a href="file:///private/tmp/claude-501/-Users-hank-app-flutter-okbet-app/3a25b639-a762-4d4d-b171-acb888b841eb/scratchpad/sprint_workflow_standalone.html#s4"><span class="n">04</span>延期分支換基底</a>
+    <a href="file:///private/tmp/claude-501/-Users-hank-app-flutter-okbet-app/3a25b639-a762-4d4d-b171-acb888b841eb/scratchpad/sprint_workflow_standalone.html#s5"><span class="n">05</span>提審被拒修復</a>
+    <a href="file:///private/tmp/claude-501/-Users-hank-app-flutter-okbet-app/3a25b639-a762-4d4d-b171-acb888b841eb/scratchpad/sprint_workflow_standalone.html#s6"><span class="n">06</span>延期需求處理</a>
+    <a href="file:///private/tmp/claude-501/-Users-hank-app-flutter-okbet-app/3a25b639-a762-4d4d-b171-acb888b841eb/scratchpad/sprint_workflow_standalone.html#s6b"><span class="n">07</span>既有 bug 修復</a>
+    <a href="file:///private/tmp/claude-501/-Users-hank-app-flutter-okbet-app/3a25b639-a762-4d4d-b171-acb888b841eb/scratchpad/sprint_workflow_standalone.html#s7"><span class="n">08</span>規則總覽</a>
+    <a href="file:///private/tmp/claude-501/-Users-hank-app-flutter-okbet-app/3a25b639-a762-4d4d-b171-acb888b841eb/scratchpad/sprint_workflow_standalone.html#s8"><span class="n">09</span>開放討論</a>
   </div>
 </nav>
 
@@ -242,8 +250,9 @@
         <div class="toc-item"><span class="n">04</span>情境：延期分支跨 Sprint 換基底</div>
         <div class="toc-item"><span class="n">05</span>情境：提審被拒的修復路徑</div>
         <div class="toc-item"><span class="n">06</span>情境：需求延期（待通知恢復）</div>
-        <div class="toc-item"><span class="n">07</span>合併與同步規則總覽</div>
-        <div class="toc-item"><span class="n">08</span>待團隊會議定案的開放問題</div>
+        <div class="toc-item"><span class="n">07</span>既有 bug 修復（bugfix 對應）</div>
+        <div class="toc-item"><span class="n">08</span>合併與同步規則總覽</div>
+        <div class="toc-item"><span class="n">09</span>待團隊會議定案的開放問題</div>
       </div>
     </div>
   </section>
@@ -260,81 +269,110 @@
         <div class="compare-col">
           <div class="compare-head"><span class="chip" style="background:var(--problem)">現行</span><h3>需求分支彼此隔離</h3></div>
           <div class="diagram-card">
-          <div class="vtrack" style="aspect-ratio:1180 / 320; position:relative;">
+          <div class="vtrack" style="aspect-ratio:1180 / 460; position:relative;">
             <div class="time-hint" style="writing-mode:horizontal-tb; left:20px; top:-14px;">TIME →</div>
 
-            <svg viewBox="0 0 1180 320" preserveAspectRatio="xMidYMid meet">
+            <svg viewBox="0 0 1180 460" preserveAspectRatio="xMidYMid meet">
               <defs>
-                <marker id="cf-trunk" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--trunk)"/></marker>
-                <marker id="cf-a" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--feat-a)"/></marker>
-                <marker id="cf-b" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--feat-b)"/></marker>
-                <marker id="cf-rel" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--release)"/></marker>
+                <marker id="cf-trunk" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--trunk)"></path></marker>
+                <marker id="cf-a" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--feat-a)"></path></marker>
+                <marker id="cf-b" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--feat-b)"></path></marker>
+                <marker id="cf-rel" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--release)"></path></marker>
+                <marker id="cf-bug" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:#2E8F63"></path></marker>
               </defs>
               <!-- lane rails -->
-              <line x1="20" y1="50" x2="1160" y2="50" style="stroke:#E4E9EB; stroke-width:2"/>
-              <line x1="20" y1="110" x2="1160" y2="110" style="stroke:#E4E9EB; stroke-width:2"/>
-              <line x1="20" y1="170" x2="1160" y2="170" style="stroke:#E4E9EB; stroke-width:2"/>
-              <line x1="20" y1="230" x2="1160" y2="230" style="stroke:#E4E9EB; stroke-width:2"/>
-              <line x1="20" y1="290" x2="1160" y2="290" style="stroke:#E4E9EB; stroke-width:2"/>
+              <line x1="20" y1="45" x2="1160" y2="45" style="stroke:#E4E9EB; stroke-width:2"></line>
+              <line x1="20" y1="103" x2="1160" y2="103" style="stroke:#E4E9EB; stroke-width:2"></line>
+              <line x1="20" y1="161" x2="1160" y2="161" style="stroke:#E4E9EB; stroke-width:2"></line>
+              <line x1="20" y1="219" x2="1160" y2="219" style="stroke:#E4E9EB; stroke-width:2"></line>
+              <line x1="20" y1="277" x2="1160" y2="277" style="stroke:#E4E9EB; stroke-width:2"></line>
+              <line x1="20" y1="335" x2="1160" y2="335" style="stroke:#E4E9EB; stroke-width:2"></line>
+              <line x1="20" y1="393" x2="1160" y2="393" style="stroke:#E4E9EB; stroke-width:2"></line>
 
               <!-- same-lane continuation (no arrowhead) -->
-              <line x1="310" y1="170" x2="390" y2="170" style="stroke:var(--trunk); stroke-width:2.5"/>
-              <line x1="390" y1="50" x2="510" y2="50" style="stroke:var(--feat-a); stroke-width:2.5"/>
-              <line x1="510" y1="50" x2="630" y2="50" style="stroke:var(--feat-a); stroke-width:2.5"/>
-              <line x1="425" y1="110" x2="540" y2="110" style="stroke:var(--feat-b); stroke-width:2.5"/>
-              <line x1="540" y1="110" x2="650" y2="110" style="stroke:var(--feat-b); stroke-width:2.5"/>
-              <line x1="880" y1="290" x2="910" y2="290" style="stroke:var(--release); stroke-width:2.5"/>
-              <line x1="1020" y1="170" x2="1100" y2="170" style="stroke:var(--trunk); stroke-width:2.5"/>
+              <line x1="310" y1="161" x2="390" y2="161" style="stroke:var(--trunk); stroke-width:2.5"></line>
+              <line x1="390" y1="45" x2="510" y2="45" style="stroke:var(--feat-a); stroke-width:2.5"></line>
+              <line x1="510" y1="45" x2="630" y2="45" style="stroke:var(--feat-a); stroke-width:2.5"></line>
+              <line x1="425" y1="103" x2="540" y2="103" style="stroke:var(--feat-b); stroke-width:2.5"></line>
+              <line x1="540" y1="103" x2="650" y2="103" style="stroke:var(--feat-b); stroke-width:2.5"></line>
+              <line x1="460" y1="219" x2="560" y2="219" style="stroke:#2E8F63; stroke-width:2.5"></line>
+              <line x1="560" y1="277" x2="660" y2="277" style="stroke:#2E8F63; stroke-width:2.5"></line>
+              <line x1="660" y1="219" x2="790" y2="219" style="stroke:#2E8F63; stroke-width:2.5"></line>
+              <line x1="790" y1="219" x2="830" y2="219" style="stroke:#2E8F63; stroke-width:2.5"></line>
+              <line x1="830" y1="393" x2="880" y2="393" style="stroke:var(--release); stroke-width:2.5"></line>
+              <line x1="880" y1="393" x2="910" y2="393" style="stroke:var(--release); stroke-width:2.5"></line>
+              <line x1="910" y1="393" x2="970" y2="393" style="stroke:var(--release); stroke-width:2.5"></line>
+              <line x1="1020" y1="161" x2="1100" y2="161" style="stroke:var(--trunk); stroke-width:2.5"></line>
 
               <!-- meaningful transitions -->
-              <line x1="390" y1="170" x2="390" y2="50" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#cf-a)"/>
-              <line x1="390" y1="170" x2="425" y2="170" style="stroke:var(--trunk); stroke-width:2.5" marker-end="url(#cf-trunk)"/>
-              <line x1="425" y1="170" x2="425" y2="110" style="stroke:var(--feat-b); stroke-width:2.5" marker-end="url(#cf-b)"/>
+              <line x1="390" y1="161" x2="390" y2="45" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#cf-a)"></line>
+              <line x1="390" y1="161" x2="425" y2="161" style="stroke:var(--trunk); stroke-width:2.5" marker-end="url(#cf-trunk)"></line>
+              <line x1="425" y1="161" x2="425" y2="103" style="stroke:var(--feat-b); stroke-width:2.5" marker-end="url(#cf-b)"></line>
+              <line x1="425" y1="161" x2="460" y2="161" style="stroke:var(--trunk); stroke-width:2.5" marker-end="url(#cf-trunk)"></line>
+              <line x1="460" y1="161" x2="460" y2="219" style="stroke:#2E8F63; stroke-width:2.5" marker-end="url(#cf-bug)"></line>
 
-              <line x1="630" y1="50" x2="740" y2="230" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#cf-a)"/>
-              <line x1="650" y1="110" x2="770" y2="230" style="stroke:var(--feat-b); stroke-width:2.5" marker-end="url(#cf-b)"/>
+              <line x1="630" y1="45" x2="740" y2="335" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#cf-a)"></line>
+              <line x1="650" y1="103" x2="770" y2="335" style="stroke:var(--feat-b); stroke-width:2.5" marker-end="url(#cf-b)"></line>
 
-              <line x1="630" y1="50" x2="880" y2="290" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#cf-a)"/>
-              <line x1="650" y1="110" x2="910" y2="290" style="stroke:var(--feat-b); stroke-width:2.5" marker-end="url(#cf-b)"/>
+              <line x1="630" y1="45" x2="880" y2="393" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#cf-a)"></line>
+              <line x1="650" y1="103" x2="910" y2="393" style="stroke:var(--feat-b); stroke-width:2.5" marker-end="url(#cf-b)"></line>
 
-              <line x1="910" y1="290" x2="970" y2="290" style="stroke:var(--release); stroke-width:2.5" marker-end="url(#cf-rel)"/>
-              <line x1="970" y1="290" x2="1020" y2="170" style="stroke:var(--release); stroke-width:2.5" marker-end="url(#cf-trunk)"/>
+              <line x1="560" y1="219" x2="560" y2="277" style="stroke:#2E8F63; stroke-width:2.5" marker-end="url(#cf-bug)"></line>
+              <line x1="660" y1="277" x2="660" y2="219" style="stroke:#2E8F63; stroke-width:2.5" marker-end="url(#cf-bug)"></line>
+              <line x1="790" y1="219" x2="790" y2="335" style="stroke:#2E8F63; stroke-width:2.5" marker-end="url(#cf-bug)"></line>
+              <line x1="830" y1="219" x2="830" y2="393" style="stroke:#2E8F63; stroke-width:2.5" marker-end="url(#cf-bug)"></line>
+
+              <line x1="970" y1="393" x2="1020" y2="161" style="stroke:var(--release); stroke-width:2.5" marker-end="url(#cf-trunk)"></line>
 
               <!-- nodes -->
-              <circle cx="310" cy="170" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="390" cy="170" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="425" cy="170" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="390" cy="50" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="510" cy="50" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="630" cy="50" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="425" cy="110" r="7" style="fill:var(--feat-b); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="540" cy="110" r="7" style="fill:var(--feat-b); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="650" cy="110" r="7" style="fill:var(--feat-b); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="740" cy="230" r="9" style="fill:var(--problem); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="770" cy="230" r="9" style="fill:var(--problem); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="880" cy="290" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="910" cy="290" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="970" cy="290" r="9" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="1020" cy="170" r="9" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="1100" cy="170" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="310" cy="161" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="390" cy="161" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="425" cy="161" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="460" cy="161" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="390" cy="45" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="510" cy="45" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="630" cy="45" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="425" cy="103" r="7" style="fill:var(--feat-b); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="540" cy="103" r="7" style="fill:var(--feat-b); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="650" cy="103" r="7" style="fill:var(--feat-b); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="460" cy="219" r="7" style="fill:#2E8F63; stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="560" cy="219" r="7" style="fill:#2E8F63; stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="660" cy="219" r="7" style="fill:#2E8F63; stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="790" cy="219" r="7" style="fill:#2E8F63; stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="790" cy="335" r="9" style="fill:var(--problem); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="830" cy="219" r="7" style="fill:#2E8F63; stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="560" cy="277" r="7" style="fill:#2E8F63; stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="660" cy="277" r="7" style="fill:#2E8F63; stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="740" cy="335" r="9" style="fill:var(--problem); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="770" cy="335" r="9" style="fill:var(--problem); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="830" cy="393" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="880" cy="393" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="910" cy="393" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="970" cy="393" r="9" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="1020" cy="161" r="9" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="1100" cy="161" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"></circle>
             </svg>
 
-            <div class="lane-chip" style="top:15.6%; left:8px; background:var(--feat-a);">feature/OKF-1234</div>
-            <div class="lane-chip" style="top:34.4%; left:8px; background:var(--feat-b);">feature/OKF-1235</div>
-            <div class="lane-chip" style="top:53.1%; left:8px; background:var(--trunk);">dev2</div>
-            <div class="lane-chip" style="top:71.9%; left:8px; background:var(--problem);">forQA</div>
-            <div class="lane-chip" style="top:90.6%; left:8px; background:var(--release);">dev2_2.0.86_0827（發版分支）</div>
+            <div class="lane-chip" style="top:9.8%; left:8px; background:var(--feat-a);">feature/OKF-1234</div>
+            <div class="lane-chip" style="top:22.4%; left:8px; background:var(--feat-b);">feature/OKF-1235</div>
+            <div class="lane-chip" style="top:35%; left:8px; background:var(--trunk);">dev2</div>
+            <div class="lane-chip" style="top:47.6%; left:8px; background:#2E8F63;">bugfix</div>
+            <div class="lane-chip" style="top:60.2%; left:36%; background:#2E8F63;">fix/OKB-9001</div>
+            <div class="lane-chip" style="top:72.8%; left:8px; background:var(--problem);">forQA</div>
+            <div class="lane-chip" style="top:85.4%; left:8px; background:var(--release);">dev2_2.0.86_0827（發版分支）</div>
 
-            <div class="step-badge" style="left:41.5%; top:24.3%;">1</div>
-            <div class="step-badge" style="left:64%; top:71.9%;">2</div>
-            <div class="step-badge" style="left:72%; top:81.3%;">3</div>
-            <div class="step-badge" style="left:84%; top:65.6%;">4</div>
+            <div class="step-badge" style="left:41.5%; top:16%;">1</div>
+            <div class="step-badge" style="left:64%; top:72.8%;">2</div>
+            <div class="step-badge" style="left:75.8%; top:85.4%;">3</div>
+            <div class="step-badge" style="left:84.3%; top:60.2%;">4</div>
+            <div class="step-badge" style="left:42.4%; top:53.9%;">5</div>
           </div>
           <div class="diagram-legend">
             <div class="legend-row"><span class="b">1</span>需求分支開發期間完全看不到彼此</div>
             <div class="legend-row"><span class="b">2</span>相依衝突在 forQA 才第一次出現，兩邊都無法修</div>
             <div class="legend-row"><span class="b">3</span>主管把需求分支合併到發版分支</div>
             <div class="legend-row"><span class="b">4</span>送審後合併回 dev2</div>
+            <div class="legend-row"><span class="b">5</span><span>bugfix 處理的是<b>既有問題（常是用戶回報）</b>，不是當期需求開發/QA 測出來的 bug（那類直接在需求分支上修）。歷史 bug 從 dev2 切出 bugfix，個別 bug 再從 bugfix 各自開分支修，修完合回 bugfix，接著也會合併進 <b>forQA</b> 測試，最後直接合併回發版分支</span></div>
           </div>
           </div>
           <div class="compare-caption">需求分支各自從 dev2 切出，開發期間<b>完全看不到彼此</b>；第一次相遇是在 forQA 打包時，但 forQA 改了沒意義，衝突無處可修。</div>
@@ -351,69 +389,69 @@
 
             <svg viewBox="0 0 1180 320" preserveAspectRatio="xMidYMid meet">
               <defs>
-                <marker id="nf-trunk" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--trunk)"/></marker>
-                <marker id="nf-a" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--feat-a)"/></marker>
-                <marker id="nf-b" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--feat-b)"/></marker>
-                <marker id="nf-sol" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--solution)"/></marker>
-                <marker id="nf-rel" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--release)"/></marker>
+                <marker id="nf-trunk" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--trunk)"></path></marker>
+                <marker id="nf-a" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--feat-a)"></path></marker>
+                <marker id="nf-b" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--feat-b)"></path></marker>
+                <marker id="nf-sol" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--solution)"></path></marker>
+                <marker id="nf-rel" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--release)"></path></marker>
               </defs>
               <!-- lane rails -->
-              <line x1="20" y1="50" x2="1160" y2="50" style="stroke:#E4E9EB; stroke-width:2"/>
-              <line x1="20" y1="110" x2="1160" y2="110" style="stroke:#E4E9EB; stroke-width:2"/>
-              <line x1="20" y1="170" x2="1160" y2="170" style="stroke:#E4E9EB; stroke-width:2"/>
-              <line x1="20" y1="230" x2="1160" y2="230" style="stroke:#E4E9EB; stroke-width:2"/>
-              <line x1="20" y1="290" x2="1160" y2="290" style="stroke:#E4E9EB; stroke-width:2"/>
+              <line x1="20" y1="50" x2="1160" y2="50" style="stroke:#E4E9EB; stroke-width:2"></line>
+              <line x1="20" y1="110" x2="1160" y2="110" style="stroke:#E4E9EB; stroke-width:2"></line>
+              <line x1="20" y1="170" x2="1160" y2="170" style="stroke:#E4E9EB; stroke-width:2"></line>
+              <line x1="20" y1="230" x2="1160" y2="230" style="stroke:#E4E9EB; stroke-width:2"></line>
+              <line x1="20" y1="290" x2="1160" y2="290" style="stroke:#E4E9EB; stroke-width:2"></line>
 
               <!-- same-lane continuation -->
-              <line x1="310" y1="170" x2="390" y2="170" style="stroke:var(--trunk); stroke-width:2.5"/>
-              <line x1="430" y1="230" x2="450" y2="230" style="stroke:var(--solution); stroke-width:2.5"/>
-              <line x1="430" y1="50" x2="500" y2="50" style="stroke:var(--feat-a); stroke-width:2.5"/>
-              <line x1="450" y1="110" x2="520" y2="110" style="stroke:var(--feat-b); stroke-width:2.5"/>
-              <line x1="620" y1="50" x2="700" y2="50" style="stroke:var(--feat-a); stroke-width:2.5"/>
-              <line x1="640" y1="110" x2="720" y2="110" style="stroke:var(--feat-b); stroke-width:2.5"/>
-              <line x1="1040" y1="170" x2="1110" y2="170" style="stroke:var(--trunk); stroke-width:2.5"/>
+              <line x1="310" y1="170" x2="390" y2="170" style="stroke:var(--trunk); stroke-width:2.5"></line>
+              <line x1="430" y1="230" x2="450" y2="230" style="stroke:var(--solution); stroke-width:2.5"></line>
+              <line x1="430" y1="50" x2="500" y2="50" style="stroke:var(--feat-a); stroke-width:2.5"></line>
+              <line x1="450" y1="110" x2="520" y2="110" style="stroke:var(--feat-b); stroke-width:2.5"></line>
+              <line x1="620" y1="50" x2="700" y2="50" style="stroke:var(--feat-a); stroke-width:2.5"></line>
+              <line x1="640" y1="110" x2="720" y2="110" style="stroke:var(--feat-b); stroke-width:2.5"></line>
+              <line x1="1040" y1="170" x2="1110" y2="170" style="stroke:var(--trunk); stroke-width:2.5"></line>
 
               <!-- meaningful transitions -->
-              <line x1="390" y1="170" x2="390" y2="230" style="stroke:var(--solution); stroke-width:2.5" marker-end="url(#nf-sol)"/>
-              <line x1="450" y1="230" x2="430" y2="50" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#nf-a)"/>
-              <line x1="450" y1="230" x2="450" y2="110" style="stroke:var(--feat-b); stroke-width:2.5" marker-end="url(#nf-b)"/>
+              <line x1="390" y1="170" x2="390" y2="230" style="stroke:var(--solution); stroke-width:2.5" marker-end="url(#nf-sol)"></line>
+              <line x1="450" y1="230" x2="430" y2="50" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#nf-a)"></line>
+              <line x1="450" y1="230" x2="450" y2="110" style="stroke:var(--feat-b); stroke-width:2.5" marker-end="url(#nf-b)"></line>
 
-              <line x1="500" y1="50" x2="570" y2="230" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#nf-sol)"/>
-              <line x1="570" y1="230" x2="620" y2="50" style="stroke:var(--feat-a); stroke-width:2; stroke-dasharray:7,5; opacity:.7" marker-end="url(#nf-a)"/>
-              <line x1="520" y1="110" x2="590" y2="230" style="stroke:var(--feat-b); stroke-width:2.5" marker-end="url(#nf-sol)"/>
-              <line x1="590" y1="230" x2="640" y2="110" style="stroke:var(--feat-b); stroke-width:2; stroke-dasharray:7,5; opacity:.7" marker-end="url(#nf-b)"/>
+              <line x1="500" y1="50" x2="570" y2="230" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#nf-sol)"></line>
+              <line x1="570" y1="230" x2="620" y2="50" style="stroke:var(--feat-a); stroke-width:2; stroke-dasharray:7,5; opacity:.7" marker-end="url(#nf-a)"></line>
+              <line x1="520" y1="110" x2="590" y2="230" style="stroke:var(--feat-b); stroke-width:2.5" marker-end="url(#nf-sol)"></line>
+              <line x1="590" y1="230" x2="640" y2="110" style="stroke:var(--feat-b); stroke-width:2; stroke-dasharray:7,5; opacity:.7" marker-end="url(#nf-b)"></line>
 
-              <line x1="700" y1="50" x2="770" y2="230" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#nf-sol)"/>
-              <line x1="720" y1="110" x2="790" y2="230" style="stroke:var(--feat-b); stroke-width:2.5" marker-end="url(#nf-sol)"/>
+              <line x1="700" y1="50" x2="770" y2="230" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#nf-sol)"></line>
+              <line x1="720" y1="110" x2="790" y2="230" style="stroke:var(--feat-b); stroke-width:2.5" marker-end="url(#nf-sol)"></line>
 
-              <line x1="770" y1="230" x2="840" y2="230" style="stroke:var(--solution); stroke-width:2.5"/>
-              <line x1="790" y1="230" x2="840" y2="230" style="stroke:var(--solution); stroke-width:2.5"/>
-              <line x1="840" y1="230" x2="940" y2="290" style="stroke:var(--solution); stroke-width:2.5" marker-end="url(#nf-rel)"/>
-              <line x1="940" y1="290" x2="1040" y2="170" style="stroke:var(--release); stroke-width:2.5" marker-end="url(#nf-trunk)"/>
-              <line x1="1040" y1="170" x2="1120" y2="240" style="stroke:var(--solution); stroke-width:2; stroke-dasharray:3,5; opacity:.6" marker-end="url(#nf-sol)"/>
+              <line x1="770" y1="230" x2="840" y2="230" style="stroke:var(--solution); stroke-width:2.5"></line>
+              <line x1="790" y1="230" x2="840" y2="230" style="stroke:var(--solution); stroke-width:2.5"></line>
+              <line x1="840" y1="230" x2="940" y2="290" style="stroke:var(--solution); stroke-width:2.5" marker-end="url(#nf-rel)"></line>
+              <line x1="940" y1="290" x2="1040" y2="170" style="stroke:var(--release); stroke-width:2.5" marker-end="url(#nf-trunk)"></line>
+              <line x1="1040" y1="170" x2="1120" y2="240" style="stroke:var(--solution); stroke-width:2; stroke-dasharray:3,5; opacity:.6" marker-end="url(#nf-sol)"></line>
 
               <!-- nodes -->
-              <circle cx="310" cy="170" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="390" cy="170" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="390" cy="230" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="430" cy="230" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="450" cy="230" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="430" cy="50" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="450" cy="110" r="7" style="fill:var(--feat-b); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="500" cy="50" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="570" cy="230" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="620" cy="50" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="520" cy="110" r="7" style="fill:var(--feat-b); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="590" cy="230" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="640" cy="110" r="7" style="fill:var(--feat-b); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="700" cy="50" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="720" cy="110" r="7" style="fill:var(--feat-b); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="770" cy="230" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="790" cy="230" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="840" cy="230" r="9" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="940" cy="290" r="9" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="1040" cy="170" r="8" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
-              <circle cx="1110" cy="170" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
+              <circle cx="310" cy="170" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="390" cy="170" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="390" cy="230" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="430" cy="230" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="450" cy="230" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="430" cy="50" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="450" cy="110" r="7" style="fill:var(--feat-b); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="500" cy="50" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="570" cy="230" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="620" cy="50" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="520" cy="110" r="7" style="fill:var(--feat-b); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="590" cy="230" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="640" cy="110" r="7" style="fill:var(--feat-b); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="700" cy="50" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="720" cy="110" r="7" style="fill:var(--feat-b); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="770" cy="230" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="790" cy="230" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="840" cy="230" r="9" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="940" cy="290" r="9" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="1040" cy="170" r="8" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"></circle>
+              <circle cx="1110" cy="170" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"></circle>
             </svg>
 
             <div class="lane-chip" style="top:15.6%; left:8px; background:var(--feat-a);">feature/OKF-1234</div>
@@ -511,48 +549,48 @@
 
           <svg viewBox="0 0 980 240" preserveAspectRatio="xMidYMid meet">
             <defs>
-              <marker id="s4-a" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--feat-a)"/></marker>
+              <marker id="s4-a" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--feat-a)"></path></marker>
             </defs>
             <!-- lane rails (only where the branch actually exists) -->
-            <line x1="180" y1="60" x2="560" y2="60" style="stroke:#E4E9EB; stroke-width:2"/>
-            <line x1="600" y1="120" x2="940" y2="120" style="stroke:#E4E9EB; stroke-width:2"/>
-            <line x1="240" y1="185" x2="900" y2="185" style="stroke:#E4E9EB; stroke-width:2"/>
+            <line x1="180" y1="60" x2="560" y2="60" style="stroke:#E4E9EB; stroke-width:2"></line>
+            <line x1="600" y1="120" x2="940" y2="120" style="stroke:#E4E9EB; stroke-width:2"></line>
+            <line x1="240" y1="185" x2="900" y2="185" style="stroke:#E4E9EB; stroke-width:2"></line>
 
             <!-- dev_0903 own continuation -->
-            <line x1="180" y1="60" x2="240" y2="60" style="stroke:var(--solution); stroke-width:2.5"/>
-            <line x1="240" y1="60" x2="380" y2="60" style="stroke:var(--solution); stroke-width:2.5"/>
-            <line x1="380" y1="60" x2="560" y2="60" style="stroke:var(--solution); stroke-width:2.5; opacity:.45"/>
+            <line x1="180" y1="60" x2="240" y2="60" style="stroke:var(--solution); stroke-width:2.5"></line>
+            <line x1="240" y1="60" x2="380" y2="60" style="stroke:var(--solution); stroke-width:2.5"></line>
+            <line x1="380" y1="60" x2="560" y2="60" style="stroke:var(--solution); stroke-width:2.5; opacity:.45"></line>
 
             <!-- F own continuation -->
-            <line x1="240" y1="185" x2="380" y2="185" style="stroke:var(--feat-a); stroke-width:2.5"/>
-            <line x1="380" y1="185" x2="520" y2="185" style="stroke:var(--feat-a); stroke-width:2.5"/>
-            <line x1="520" y1="185" x2="660" y2="185" style="stroke:var(--feat-a); stroke-width:2.5"/>
-            <line x1="660" y1="185" x2="760" y2="185" style="stroke:var(--feat-a); stroke-width:2.5"/>
-            <line x1="760" y1="185" x2="900" y2="185" style="stroke:var(--feat-a); stroke-width:2.5"/>
+            <line x1="240" y1="185" x2="380" y2="185" style="stroke:var(--feat-a); stroke-width:2.5"></line>
+            <line x1="380" y1="185" x2="520" y2="185" style="stroke:var(--feat-a); stroke-width:2.5"></line>
+            <line x1="520" y1="185" x2="660" y2="185" style="stroke:var(--feat-a); stroke-width:2.5"></line>
+            <line x1="660" y1="185" x2="760" y2="185" style="stroke:var(--feat-a); stroke-width:2.5"></line>
+            <line x1="760" y1="185" x2="900" y2="185" style="stroke:var(--feat-a); stroke-width:2.5"></line>
 
             <!-- dev_0917 own continuation -->
-            <line x1="600" y1="120" x2="680" y2="120" style="stroke:#2E8F63; stroke-width:2.5"/>
-            <line x1="680" y1="120" x2="940" y2="120" style="stroke:#2E8F63; stroke-width:2.5"/>
+            <line x1="600" y1="120" x2="680" y2="120" style="stroke:#2E8F63; stroke-width:2.5"></line>
+            <line x1="680" y1="120" x2="940" y2="120" style="stroke:#2E8F63; stroke-width:2.5"></line>
 
             <!-- meaningful transitions -->
-            <line x1="240" y1="60" x2="240" y2="185" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#s4-a)"/>
-            <line x1="380" y1="185" x2="380" y2="60" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#s4-a)"/>
-            <line x1="660" y1="185" x2="680" y2="120" style="stroke:var(--feat-a); stroke-width:2; stroke-dasharray:3,5" marker-end="url(#s4-a)"/>
+            <line x1="240" y1="60" x2="240" y2="185" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#s4-a)"></line>
+            <line x1="380" y1="185" x2="380" y2="60" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#s4-a)"></line>
+            <line x1="660" y1="185" x2="680" y2="120" style="stroke:var(--feat-a); stroke-width:2; stroke-dasharray:3,5" marker-end="url(#s4-a)"></line>
 
             <!-- nodes -->
-            <circle cx="180" cy="60" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="240" cy="60" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="380" cy="60" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="560" cy="60" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3; opacity:.55"/>
-            <circle cx="240" cy="185" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="380" cy="185" r="8" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="520" cy="185" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="660" cy="185" r="8" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="760" cy="185" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="900" cy="185" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="600" cy="120" r="7" style="fill:#2E8F63; stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="680" cy="120" r="8" style="fill:#2E8F63; stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="940" cy="120" r="7" style="fill:#2E8F63; stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="180" cy="60" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="240" cy="60" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="380" cy="60" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="560" cy="60" r="8" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3; opacity:.55"></circle>
+            <circle cx="240" cy="185" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="380" cy="185" r="8" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="520" cy="185" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="660" cy="185" r="8" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="760" cy="185" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="900" cy="185" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="600" cy="120" r="7" style="fill:#2E8F63; stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="680" cy="120" r="8" style="fill:#2E8F63; stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="940" cy="120" r="7" style="fill:#2E8F63; stroke:var(--paper-raised); stroke-width:3"></circle>
           </svg>
 
           <div class="lane-chip" style="top:25%; left:8px; background:var(--solution);">dev_20260903</div>
@@ -594,50 +632,50 @@
 
           <svg viewBox="0 0 980 240" preserveAspectRatio="xMidYMid meet">
             <defs>
-              <marker id="s5-rel" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--release)"/></marker>
-              <marker id="s5-sol" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--solution)"/></marker>
+              <marker id="s5-rel" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--release)"></path></marker>
+              <marker id="s5-sol" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--solution)"></path></marker>
             </defs>
             <!-- lane rails -->
-            <line x1="140" y1="60" x2="920" y2="60" style="stroke:#E4E9EB; stroke-width:2"/>
-            <line x1="140" y1="130" x2="920" y2="130" style="stroke:#E4E9EB; stroke-width:2"/>
-            <line x1="460" y1="195" x2="920" y2="195" style="stroke:#E4E9EB; stroke-width:2"/>
+            <line x1="140" y1="60" x2="920" y2="60" style="stroke:#E4E9EB; stroke-width:2"></line>
+            <line x1="140" y1="130" x2="920" y2="130" style="stroke:#E4E9EB; stroke-width:2"></line>
+            <line x1="460" y1="195" x2="920" y2="195" style="stroke:#E4E9EB; stroke-width:2"></line>
 
             <!-- release continuation (red segment = rejected window) -->
-            <line x1="140" y1="60" x2="240" y2="60" style="stroke:var(--release); stroke-width:2.5"/>
-            <line x1="240" y1="60" x2="520" y2="60" style="stroke:var(--release); stroke-width:2.5"/>
-            <line x1="520" y1="60" x2="620" y2="60" style="stroke:var(--problem); stroke-width:2.5"/>
-            <line x1="620" y1="60" x2="720" y2="60" style="stroke:var(--release); stroke-width:2.5"/>
-            <line x1="720" y1="60" x2="900" y2="60" style="stroke:var(--release); stroke-width:2.5"/>
+            <line x1="140" y1="60" x2="240" y2="60" style="stroke:var(--release); stroke-width:2.5"></line>
+            <line x1="240" y1="60" x2="520" y2="60" style="stroke:var(--release); stroke-width:2.5"></line>
+            <line x1="520" y1="60" x2="620" y2="60" style="stroke:var(--problem); stroke-width:2.5"></line>
+            <line x1="620" y1="60" x2="720" y2="60" style="stroke:var(--release); stroke-width:2.5"></line>
+            <line x1="720" y1="60" x2="900" y2="60" style="stroke:var(--release); stroke-width:2.5"></line>
 
             <!-- dev2 continuation -->
-            <line x1="140" y1="130" x2="240" y2="130" style="stroke:var(--trunk); stroke-width:2.5"/>
-            <line x1="240" y1="130" x2="460" y2="130" style="stroke:var(--trunk); stroke-width:2.5"/>
-            <line x1="460" y1="130" x2="720" y2="130" style="stroke:var(--trunk); stroke-width:2.5"/>
-            <line x1="720" y1="130" x2="830" y2="130" style="stroke:var(--trunk); stroke-width:2.5"/>
-            <line x1="830" y1="130" x2="920" y2="130" style="stroke:var(--trunk); stroke-width:2.5"/>
+            <line x1="140" y1="130" x2="240" y2="130" style="stroke:var(--trunk); stroke-width:2.5"></line>
+            <line x1="240" y1="130" x2="460" y2="130" style="stroke:var(--trunk); stroke-width:2.5"></line>
+            <line x1="460" y1="130" x2="720" y2="130" style="stroke:var(--trunk); stroke-width:2.5"></line>
+            <line x1="720" y1="130" x2="830" y2="130" style="stroke:var(--trunk); stroke-width:2.5"></line>
+            <line x1="830" y1="130" x2="920" y2="130" style="stroke:var(--trunk); stroke-width:2.5"></line>
 
             <!-- dev_20260917 continuation -->
-            <line x1="460" y1="195" x2="830" y2="195" style="stroke:var(--solution); stroke-width:2.5"/>
-            <line x1="830" y1="195" x2="920" y2="195" style="stroke:var(--solution); stroke-width:2.5"/>
+            <line x1="460" y1="195" x2="830" y2="195" style="stroke:var(--solution); stroke-width:2.5"></line>
+            <line x1="830" y1="195" x2="920" y2="195" style="stroke:var(--solution); stroke-width:2.5"></line>
 
             <!-- meaningful transitions -->
-            <line x1="240" y1="60" x2="240" y2="130" style="stroke:var(--release); stroke-width:2.5" marker-end="url(#s5-rel)"/>
-            <line x1="460" y1="130" x2="460" y2="195" style="stroke:var(--solution); stroke-width:2.5" marker-end="url(#s5-sol)"/>
-            <line x1="720" y1="60" x2="720" y2="130" style="stroke:var(--release); stroke-width:2.5" marker-end="url(#s5-rel)"/>
-            <line x1="830" y1="130" x2="830" y2="195" style="stroke:var(--solution); stroke-width:2.5" marker-end="url(#s5-sol)"/>
+            <line x1="240" y1="60" x2="240" y2="130" style="stroke:var(--release); stroke-width:2.5" marker-end="url(#s5-rel)"></line>
+            <line x1="460" y1="130" x2="460" y2="195" style="stroke:var(--solution); stroke-width:2.5" marker-end="url(#s5-sol)"></line>
+            <line x1="720" y1="60" x2="720" y2="130" style="stroke:var(--release); stroke-width:2.5" marker-end="url(#s5-rel)"></line>
+            <line x1="830" y1="130" x2="830" y2="195" style="stroke:var(--solution); stroke-width:2.5" marker-end="url(#s5-sol)"></line>
 
             <!-- nodes -->
-            <circle cx="140" cy="60" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="240" cy="60" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="520" cy="60" r="9" style="fill:var(--problem); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="620" cy="60" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="720" cy="60" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="240" cy="130" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="460" cy="130" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="720" cy="130" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="830" cy="130" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="460" cy="195" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="830" cy="195" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="140" cy="60" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="240" cy="60" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="520" cy="60" r="9" style="fill:var(--problem); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="620" cy="60" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="720" cy="60" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="240" cy="130" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="460" cy="130" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="720" cy="130" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="830" cy="130" r="7" style="fill:var(--trunk); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="460" cy="195" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="830" cy="195" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"></circle>
           </svg>
 
           <div class="lane-chip" style="top:25%; left:8px; background:var(--release);">release_20260903</div>
@@ -680,36 +718,36 @@
 
           <svg viewBox="0 0 980 200" preserveAspectRatio="xMidYMid meet">
             <defs>
-              <marker id="s6-a" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--feat-a)"/></marker>
+              <marker id="s6-a" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--feat-a)"></path></marker>
             </defs>
             <!-- lane rails -->
-            <line x1="140" y1="60" x2="900" y2="60" style="stroke:#E4E9EB; stroke-width:2"/>
-            <line x1="240" y1="140" x2="520" y2="140" style="stroke:#E4E9EB; stroke-width:2"/>
+            <line x1="140" y1="60" x2="900" y2="60" style="stroke:#E4E9EB; stroke-width:2"></line>
+            <line x1="240" y1="140" x2="520" y2="140" style="stroke:#E4E9EB; stroke-width:2"></line>
 
             <!-- sprint continuation -->
-            <line x1="140" y1="60" x2="240" y2="60" style="stroke:var(--solution); stroke-width:2.5"/>
-            <line x1="240" y1="60" x2="520" y2="60" style="stroke:var(--solution); stroke-width:2.5"/>
-            <line x1="520" y1="60" x2="650" y2="60" style="stroke:var(--solution); stroke-width:2.5"/>
-            <line x1="650" y1="60" x2="900" y2="60" style="stroke:var(--solution); stroke-width:2.5"/>
+            <line x1="140" y1="60" x2="240" y2="60" style="stroke:var(--solution); stroke-width:2.5"></line>
+            <line x1="240" y1="60" x2="520" y2="60" style="stroke:var(--solution); stroke-width:2.5"></line>
+            <line x1="520" y1="60" x2="650" y2="60" style="stroke:var(--solution); stroke-width:2.5"></line>
+            <line x1="650" y1="60" x2="900" y2="60" style="stroke:var(--solution); stroke-width:2.5"></line>
 
             <!-- feature continuation -->
-            <line x1="240" y1="140" x2="380" y2="140" style="stroke:var(--feat-a); stroke-width:2.5"/>
-            <line x1="380" y1="140" x2="520" y2="140" style="stroke:var(--feat-a); stroke-width:2.5"/>
+            <line x1="240" y1="140" x2="380" y2="140" style="stroke:var(--feat-a); stroke-width:2.5"></line>
+            <line x1="380" y1="140" x2="520" y2="140" style="stroke:var(--feat-a); stroke-width:2.5"></line>
 
             <!-- branch cut + merge -->
-            <line x1="240" y1="60" x2="240" y2="140" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#s6-a)"/>
-            <line x1="520" y1="140" x2="520" y2="60" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#s6-a)"/>
+            <line x1="240" y1="60" x2="240" y2="140" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#s6-a)"></line>
+            <line x1="520" y1="140" x2="520" y2="60" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#s6-a)"></line>
 
             <!-- revert marker ring -->
-            <circle cx="650" cy="60" r="13" style="fill:none; stroke:var(--problem); stroke-width:2; stroke-dasharray:3,3"/>
+            <circle cx="650" cy="60" r="13" style="fill:none; stroke:var(--problem); stroke-width:2; stroke-dasharray:3,3"></circle>
 
             <!-- nodes -->
-            <circle cx="140" cy="60" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="240" cy="60" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="380" cy="140" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="520" cy="60" r="9" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="650" cy="60" r="8" style="fill:var(--problem); stroke:var(--paper-raised); stroke-width:3"/>
-            <circle cx="900" cy="60" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"/>
+            <circle cx="140" cy="60" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="240" cy="60" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="380" cy="140" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="520" cy="60" r="9" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="650" cy="60" r="8" style="fill:var(--problem); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="900" cy="60" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"></circle>
           </svg>
 
           <div class="lane-chip" style="top:30%; left:8px; background:var(--solution);">dev_20260903</div>
@@ -752,10 +790,89 @@
     </div>
   </section>
 
+  <!-- ================= SLIDE 6b — EXISTING BUG FIX (NEW FLOW) ================= -->
+  <section class="slide" id="s6b">
+    <div class="slide-inner">
+      <p class="eyebrow">07 — 邊界情境</p>
+      <h2 class="title">情境四：既有 bug 修復（bugfix 對應）</h2>
+      <p class="sub">新版流程沒有獨立的 bugfix 分支，依急迫程度分流到 dev_20260903 或 release_20260903。</p>
+      <div class="diagram-card" style="margin-bottom:26px;">
+        <div class="vtrack" style="aspect-ratio:1180 / 280; position:relative;">
+          <div class="time-hint" style="writing-mode:horizontal-tb; left:20px; top:-14px;">TIME →</div>
+
+          <svg viewBox="0 0 1180 280" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <marker id="s6b-sol" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--solution)"></path></marker>
+              <marker id="s6b-a" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--feat-a)"></path></marker>
+              <marker id="s6b-rel" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--release)"></path></marker>
+              <marker id="s6b-prob" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1L11,6L1,11Z" style="fill:var(--problem)"></path></marker>
+            </defs>
+            <!-- lane rails -->
+            <line x1="20" y1="45" x2="1160" y2="45" style="stroke:#E4E9EB; stroke-width:2"></line>
+            <line x1="20" y1="110" x2="1160" y2="110" style="stroke:#E4E9EB; stroke-width:2"></line>
+            <line x1="20" y1="175" x2="1160" y2="175" style="stroke:#E4E9EB; stroke-width:2"></line>
+            <line x1="20" y1="240" x2="1160" y2="240" style="stroke:#E4E9EB; stroke-width:2"></line>
+
+            <!-- same-lane continuation -->
+            <line x1="140" y1="110" x2="210" y2="110" style="stroke:var(--solution); stroke-width:2.5"></line>
+            <line x1="360" y1="110" x2="500" y2="110" style="stroke:var(--solution); stroke-width:2.5"></line>
+            <line x1="210" y1="45" x2="330" y2="45" style="stroke:var(--feat-a); stroke-width:2.5"></line>
+            <line x1="500" y1="175" x2="650" y2="175" style="stroke:var(--release); stroke-width:2.5"></line>
+            <line x1="650" y1="175" x2="750" y2="175" style="stroke:var(--release); stroke-width:2.5"></line>
+            <line x1="900" y1="175" x2="960" y2="175" style="stroke:var(--release); stroke-width:2.5"></line>
+            <line x1="750" y1="240" x2="850" y2="240" style="stroke:var(--problem); stroke-width:2.5"></line>
+
+            <!-- meaningful transitions -->
+            <line x1="210" y1="110" x2="210" y2="45" style="stroke:var(--solution); stroke-width:2.5" marker-end="url(#s6b-a)"></line>
+            <line x1="330" y1="45" x2="360" y2="110" style="stroke:var(--feat-a); stroke-width:2.5" marker-end="url(#s6b-sol)"></line>
+            <line x1="500" y1="110" x2="500" y2="175" style="stroke:var(--solution); stroke-width:2.5" marker-end="url(#s6b-rel)"></line>
+            <line x1="750" y1="175" x2="750" y2="240" style="stroke:var(--release); stroke-width:2.5" marker-end="url(#s6b-prob)"></line>
+            <line x1="850" y1="240" x2="900" y2="175" style="stroke:var(--problem); stroke-width:2.5" marker-end="url(#s6b-rel)"></line>
+
+            <!-- direct-commit marker ring -->
+            <circle cx="650" cy="175" r="13" style="fill:none; stroke:var(--problem); stroke-width:2; stroke-dasharray:3,3"></circle>
+
+            <!-- nodes -->
+            <circle cx="140" cy="110" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="210" cy="110" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="360" cy="110" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="500" cy="110" r="7" style="fill:var(--solution); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="210" cy="45" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="330" cy="45" r="7" style="fill:var(--feat-a); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="500" cy="175" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="650" cy="175" r="8" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="750" cy="175" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="900" cy="175" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="960" cy="175" r="7" style="fill:var(--release); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="750" cy="240" r="7" style="fill:var(--problem); stroke:var(--paper-raised); stroke-width:3"></circle>
+            <circle cx="850" cy="240" r="7" style="fill:var(--problem); stroke:var(--paper-raised); stroke-width:3"></circle>
+          </svg>
+
+          <div class="lane-chip" style="top:16.1%; left:8px; background:var(--feat-a);">fix/OKB-9002</div>
+          <div class="lane-chip" style="top:39.3%; left:8px; background:var(--solution);">dev_20260903</div>
+          <div class="lane-chip" style="top:62.5%; left:30%; background:var(--release);">release_20260903</div>
+          <div class="lane-chip" style="top:85.7%; left:50%; background:var(--problem);">hotfix/OKB-9003</div>
+
+          <div class="step-badge" style="left:22.9%; top:26.8%;">1</div>
+          <div class="step-badge" style="left:42.4%; top:51.8%;">2</div>
+          <div class="step-badge" style="left:55.1%; top:39.3%;">3</div>
+          <div class="step-badge" style="left:67.8%; top:75%;">4</div>
+        </div>
+        <div class="diagram-legend">
+          <div class="legend-row"><span class="b">1</span>不急的 bug：跟需求分支一樣開 fix/OKB-xxxx，測完合回 dev_20260903</div>
+          <div class="legend-row"><span class="b">2</span>dev_20260903 切出 release_20260903（同主流程）</div>
+          <div class="legend-row"><span class="b">3</span>急且改動簡單：直接 commit 在 release_20260903，從這裡打包給 QA／回歸測試（同「提審被拒修復路徑」）</div>
+          <div class="legend-row"><span class="b">4</span>急但改動複雜：開 hotfix/OKB-xxxx（從 release_20260903 切出），測完再合回去，避免直接弄髒 release 分支</div>
+        </div>
+      </div>
+      <div class="core-diff">判斷準則：<b>複雜度</b>決定要不要開分支（越有可能修錯、越需要能乾淨丟棄重來，就該開分支），<b>急迫程度</b>決定落在哪條分支（dev_20260903 還是 release_20260903）。兩者是獨立的兩個維度，不要混為一談。</div>
+    </div>
+  </section>
+
   <!-- ================= SLIDE 7 — RULES SUMMARY ================= -->
   <section class="slide" id="s7">
     <div class="slide-inner">
-      <p class="eyebrow">07 — 規則總覽</p>
+      <p class="eyebrow">08 — 規則總覽</p>
       <h2 class="title">合併與同步規則</h2>
       <p class="sub">四條可以直接寫進開發規章的規則，供會議定案。</p>
       <div class="cards g4">
@@ -786,7 +903,7 @@
   <!-- ================= SLIDE 8 — OPEN QUESTIONS ================= -->
   <section class="slide" id="s8">
     <div class="slide-inner">
-      <p class="eyebrow">08 — 待定案</p>
+      <p class="eyebrow">09 — 待定案</p>
       <h2 class="title">開放討論問題</h2>
       <p class="sub">三點需要團隊會議共識才能定案；一點已實測驗證，附上結論給大家參考。</p>
       <div class="cards g4">
@@ -838,3 +955,6 @@
     sections.forEach(function(s){ if(s) io.observe(s); });
   })();
 </script>
+
+
+</body></html>
